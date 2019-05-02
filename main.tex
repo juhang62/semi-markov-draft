@@ -17,91 +17,48 @@
 
 \usepackage{babel}
 \begin{document}
-\title{A Semi-Markov Approach to Study a Group of Kinesin!??? Motors}
+\title{A Semi-Markov Approach to Study a Group of Kinesin Motors}
 \maketitle
 \begin{abstract}
 We propose a general approach to study cellular transport by a group
 of kinesin motors. Our approach can integrate kinetic models of a
-single kinesin motor to study the group behaviors of several motors.
-By formulating the problem as a semi-Markov process and applying central
-limit theorem, asymptotic velocity and diffusivity can be readily
-calculated, rendering considerable computational advantage over Monte
-Carlo simulations in tasks such as parameter sensitivity analysis
-and model selection. We demonstrate the method with some examples
-and point out the importance of capturing the intrinsic microscopic-level
-noise of individual motors, which can give rise salient impact on
-mesoscopic level. 
+single kinesin motor, including detachment and reattachment events, to study the group behaviors of several motors. By formulating the problem as a semi-Markov process and applying a central limit theorem, asymptotic velocity and diffusivity can be readily calculated, rendering considerable computational advantage over Monte Carlo simulations in tasks such as parameter sensitivity analysis and model selection. We demonstrate the method with some examples and point out the importance of capturing the intrinsic microscopic-level dynamics of individual motors and how changes at the microscopic level propagate to the motor-cargo at a mesoscopic level. 
 \end{abstract}
 
 \section{Introduction}
 
-Intracellular transport is important for functioning of a biological
-cell. Diffusion is inadequate for long-distance transport of large
-cellular cargo, such as vesicles and organelles. Eukaryotic cells
-evolved an active transport system involving motor proteins which
-move on a track called microtubules (MTs) towing cargo to the desired
-positions. Kinesin is one type of the motor proteins. A kinesin has
-two motor domains (called heads) which can bind to ATP and MT. By
-utilizing the energy from ATP hydrolysis, a kinesin walks on MT towards
-the plus end with its two heads undergoing a sequence of tightly gated
-mechno-chemical transitions. Many studies have been conducted on a
-single motor and yield good understanding of its operation{[}{]}.
-The sequence of mechno-chemical transitions are described as kinetic
-models and usually formulated as a continuous-time Markov chain\cite{Clancy2011}.
-It is known that at least one of the transitions is force dependent{[}{]}. 
+Intracellular transport is vital for the proper functioning of a biological cell. Passive diffusion is inadequate for long-distance transport of large cellular cargo, such as vesicles and organelles. Eukaryotic cells evolved an active transport system involving motor proteins which move on a track called microtubules (MTs) towing cargo to needed locations. Kinesin is one such motor protein. A kinesin has two motor domains, typically called heads, which can bind both ATP and the MT (cite some stuff). By utilizing the energy from ATP hydrolysis, a kinesin ``walks'' on the MT towards the plus end using its two heads in a hand-over-hand fashion, undergoing a sequence of tightly coupled mechano-chemical transitions. Many studies have been conducted on single motors and given us a good understanding of its function in isolation{[}{]}. The sequence of mechano-chemical transitions are described by kinetic models and are often formulated as a continuous-time Markov chain\cite{Clancy2011}. It is known that at least some of the transition rates are force dependent{[}{]}. 
 
-In reality, molecular motors usually work in a group to transport
-cargo{[}{]}. They are tied to the common cargo by flexible polymer.
-When motors in the group drift apart, tension is built up between
-them which tends to keep them closer. In this sense, their motion
-are coupled together. When motors are moving in opposite directions,
-intriguing bidirectional movements are observed which have triggered
-substantial interests in studying transport involving multiple motors\cite{Hancock2014}.
-Understanding how motors interact and work together is a key step
-to bridge knowledge in the cellular level and the molecular level.
-Although there have been a lot of experimental and theoretical studies,
-how our understanding of a single motor can inform their behaviors
-in a group remains unclear. 
+In cellular environments, molecular motors work in a group to transport cargo{[}{]}. Motors are linked to a common cargo by a flexible polymer, forming a motor-cargo complex. When motors in the group drift apart, tension is built up between them; this tension is resolved by either detachment-reattachment or force-induced changes in the stepping rates of individual motors. In this sense, their motion is coupled together through the cargo, and keeping the complex together. When opposing motors are attached to a single cargo, intriguing bidirectional movements may be observed which have triggered substantial interest in studying transport of multiple coupled motors\cite{Hancock2014}. Although there have been many experimental and theoretical studies, how our understanding of a single motor can inform their behaviors in a motor-cargo complex remains unclear. 
 
 Stochastic modeling has a fruitful history in generating insight in
-cellular transport\cite{Bressloff2013}. In previous modeling studies
-on multiple motors, the details of underlying kinetics of individual
-motors and how load is shared between them are often overlooked\cite{Miles2018,McKinley2012,Ohashi}.
-In this work, we propose an approach to study a group of molecular
-motors which take into account microscopic details of individual motors.
-We treat loading force sharing between motors in a realistic way by
-making it depend on motors' relative positions. We focus on kinesin
-since its molecular mechanisms is well understood so that we can incorporate
-existing kinetic models into our framework. By formulating semi-Markov
-process and invoking functional CLT , group asymptotic quantities
-can be easily calculated by a few matrix operations. 
+cellular transport\cite{Bressloff2013}. In previous modeling studies on multiple motors, the details of underlying kinetics of individual motors and how the cargo load is shared between them have often been overlooked\cite{Miles2018,McKinley2012,Ohashi}. In this work, we propose an approach to study a group of molecular motors which takes into account microscopic details of individual motors. We treat loading forces shared between motors by making them dependent on motors' relative positions. We focus on kinesin since its molecular mechanisms are better understood, allowing us to incorporate existing kinetic models into the framework we will present. By formulating semi-Markov process and invoking a functional CLT, asymptotic quantities for the position of the motor-cargo complex can be easily calculated by a few computationally modest matrix operations. 
 
-The paper is outlines as follows. We first describe the semi-Markov
-approach and demonstrate examples of its application to two kinetic
-models. Taking advantage of its computational efficiency, we then
-conduct extensive study with wide range of choice of parameters. Attention
-is drawn to some interesting observations. 
+The paper is outlined as follows. We first describe the semi-Markov approach in general.  Then, we show how this framework can be applied to motor-cargo complexes. Taking advantage of its computational efficiency, we then conduct a study of the system with a wide range of parameter choices. 
 
-\section{Semi-Markov explained}
+\section{Semi-Markov Framework for Molecular Motor Models}
+
+In this section, we present a previously established framework for molecular motor models that break each kinetic cycle into a time and a displacement (cite my stuff and others) and then to use central limit theory to establish asymptotic quantities typically measured in experiments.  The goal of this paper is to generalize the technique to motor-carg complexes.
 
 We consider a Markov chain $\{S_{i}\}_{i\in\mathbb{N}}$ where $S_{i}$
-represents the relative position and the kinetic state (together called
+represents the relative position and the kinetic state (together called the
 ``group state'' henceforth) of each motor at ``time'' $i$. We
 adopt an underlying kinetic model for each motor which governs how
-the motor transitions through kinetic states. Note that every time
+the motor transitions through biochemical states. Note that every time
 a motor changes its kinetic state, the group state changes while the
 relative position only changes if the motor makes a transition which
 results in a physical step. Let $\tau_{i}$ be the time for the transition
 of $S_{i}\to S_{i+1}$ to happen and $Z_{i}$ be the change in the
-group position (arithmetic average of positions of all motors) resulted
-from this transition. If we assume $S_{i}\to S_{i+1}$ exactly follows
-every change in the group state due to the transition in the underlying
+group position (arithmetic average of positions of all motors) resulting
+from this transition. If we assume the transition from $S_{i}\to S_{i+1}$ follows
+every change in the group state due to a transition in the underlying
 kinetic states of individual motors, then $\tau_{i}$ is a exponential
-random variable. In general, neither the state space of $\{S_{i}\}$
+random variable. {\bf JF: I don't quite understand the following two sentences.}  In general, neither the state space of $\{S_{i}\}$
 needs to the set of all possible group states and nor does the transition
 of $S_{i}\to S_{i+1}$ to exactly follow every change in the group
 state due to the individual motors' kinetic transitions. Being aware
 of this sometimes would help simplify calculation as we will see later. 
+{\bf JF: I think you need to explain the dependency between the S, Z, and tau in words--specifically that they form a three dimensional Markov chain--where Z, tau at the current time depend only on S at the previous time.}
 
 Let $X(t)$ be the group position at time $t$. Using the variables
 defined above, we can write $X(t)=\sum_{i=1}^{N(t)}Z_{i}$ where $N(t)=\inf\{n\in\mathbb{N}:\sum_{i=1}^{n}\tau_{i}\ge t\}$.
@@ -109,10 +66,10 @@ Two quantities commonly observed in experiments and studied theoretically
 are asymptotic speed and diffusivity, i.e., $V=\lim_{t\to\infty}\frac{E[X(t)]}{t}$
 and $D=\lim_{t\to\infty}\frac{\text{Var}[X(t)]}{2t}$. Since experimental
 observations of motors occur at significantly long time and distance
-in contrast to microscopic motor dynamics, from a CLT point of view,
-we are looking at effectively a Brownian motion. To make it precise,
-we want to cast multiple-motor model in a framework of a semi-Markov
-process so that these two asymptotic quantities of interests can be
+in contrast to microscopic motor dynamics, from a CLT (central limit theory) point of view,
+we are looking effectively at a Brownian motion. To make it precise,
+we want to cast a multiple-motor model into a framework of semi-Markov
+processes so that these two asymptotic quantities of interests can be
 easily calculated using a functional CLT. Towards this goal, we consider
 a discrete-time Markov chain 
 \[
@@ -126,13 +83,14 @@ for which we impose the following assumptions:
 \item $S_{i}$ has a stationary distribution on a finite state space and
 is aperiodic. 
 \item conditioned on a sequence $\{S_{i}\}_{i\in\mathbb{N}}$, the sequence
-$\{(Z_{i},\tau_{i})\}_{i\in\mathbb{N}}$ are independent
+$\{(Z_{i},\tau_{i})\}_{i\in\mathbb{N}}$ are independent.
+\item $\{(Z_i, \tau_i, S_i)'\}$ is a Markov chain whose distribution at time $i$ conditioned on the chain at $i-1$ depends only on $S_{i-1}$.
 \item $P(Z_{i}\vert\{S_{j}\}_{j\in\mathbb{N}})=P(Z_{i}\vert S_{i})$ and
 $P(\tau_{i}\vert\{S_{j}\}_{j\in\mathbb{N}})=P(\tau_{i}\vert S_{i})$ 
 \item first two moments of $Z_{i}\vert S_{i}$ and $\tau_{i}\vert S_{i}$
 are finite and known
 \end{enumerate}
-Scaling time with $n$ and length by $\sqrt{n},$ we have by functional
+Scaling time with a factor $n$ and length by $\sqrt{n},$ we have by functional
 CLT 
 \[
 \sqrt{n}\big(X(nt)-Vnt\big)\Rightarrow\sqrt{2D}B(t)
@@ -145,26 +103,25 @@ V=\lim_{t\to\infty}\frac{E[X(t)]}{t}=\frac{\mu_{z}}{\mu_{\tau}}\label{eq:V}
 \end{equation}
  and 
 \begin{equation}
-D=\lim_{t\to\infty}\frac{\text{Var}(X(t))}{2t}=\frac{1}{2}(\frac{\mu_{Z}^{2}\sigma_{\tau}^{2}}{\mu_{\tau}^{3}}+\frac{\sigma_{z}^{2}}{\mu_{\tau}}-2\frac{\mu_{Z}\sigma_{Z,\tau}}{\mu_{\tau}^{2}})\label{eq:D}
+D=\lim_{t\to\infty}\frac{\text{Var}(X(t))}{2t}=\frac{1}{2}(\frac{\mu_{Z}^{2}\sigma_{\tau}^{2}}{\mu_{\tau}^{3}}+\frac{\sigma_{Z}^{2}}{\mu_{\tau}}-2\frac{\mu_{Z}\sigma_{Z,\tau}}{\mu_{\tau}^{2}})\label{eq:D}
 \end{equation}
 where $\mu_{i}$ and $\sigma_{i}^{2}$ are mean and variance of $i\in\{Z,\tau\}$,
-and $\sigma_{Z,\tau}$ denotes covariance of $Z$ and $\tau$. The
-application of functional CLT in obtaining asymptotics in studying
+and $\sigma_{Z,\tau}$ denotes covariance of $Z$ and $\tau$. {\bf I'm not crazy about this $\mu_{i}$ notation.} The
+application of a functional CLT in obtaining asymptotic quantities in studying
 molecular motors first appeared in \cite{Hughes2011} and semi-Markov
 processes were introduced in \cite{Hughes2012} to study variable
-step sizes. Here we extend this method to a group of motors. We can
-find $\mu_{i}$ and $\sigma_{i}$ by using their conditionals on the
-stationary distribution of $S_{i}$ (details summarized in the appendix).
+step sizes.{\bf JF: you may also want too cite Arjun Krishnan here.  Also, maybe look for other people's similar approaches to multiple motors.} Here we extend this method to a group of motors. We can
+find $\mu_{i}$ and $\sigma_{i}$ by finding the moments conditioned on the stationary distribution of $S_{i}$(details summarized in the appendix).
 
-\subsection{two examples }
+\subsection{Two Examples }
 
-We illustrate the use of semi-Markov approach by applying it to two
-kinetic models. First we state the common modeling assumptions. Let
+We illustrate the use of the semi-Markov approach by applying it to two
+kinetic models. First, we state the common modeling assumptions. Let
 $m$ be the number of motors linked by a linear spring with constant
-$k_{i}$ to a common cargo which equilibrates instantaneously. It
+$k_{i}$ to a common cargo which equilibriates instantaneously. It
 should be noted that the cargo is modeled as not having Brownian forces
-acting on it---which is not accurate---but not an unreasonable assumption---effectively
-we are averaging a fast cargo. Each of the motors walks on a MT without
+acting on it---which is not really the case---but also not an unreasonable assumption---effectively
+we are averaging a fast cargo {\bf JF: Cite multipaper with Pete, Scott, etc  Also, Elston}. Each of the motors walks on a MT without
 direct interactions with others, i.e., the only coupling is via the
 common cargo. Motors can detach and reattach to the MT. Motors share
 the loading force $F$ by force balance 
@@ -174,20 +131,19 @@ F=\sum_{j=1}^{m}k_{j}x_{j},
 where $x_{i}$ are the displacements of the spring connecting to the
 i-th motor ($x_{i}>0$ for displacements in the hindering direction
 and $x_{i}<0$ vice versa). Hence the loading force felt by the i-th
-motor is $k_{i}x_{i}.$ In this modeling framework, the state$S_{i}$
+motor is $k_{i}x_{i}.$ In this modeling framework, the state $S_{i}$
 consisting of 
 \begin{itemize}
-\item relative positions of $m$ motors (here we take it exactly as $\{x_{i}\}_{i\in1...m}$
-though some slack regime possibly exists) and 
+\item relative positions of $m$ motors (Here we take it exactly as $\{x_{i}\}_{i\in1...m}$
+though some slack regime possibly exists. {\bf JF: what does slack regime mean} ) 
 \item their kinetic states (including detachment as a state). 
 \end{itemize}
 Moreover, in the kinetic model we wish to adopt, at least one of the
-transition is force-dependent by which motors are coupled. In the
-following, we present details on how to apply this approach. 
+transitions is force-dependent and its rate is thus affected by which motors are coupled to that motor. In the following, we present details on how to apply this approach through some examples. 
 
-\subsubsection{a standard 3-state model}
+\subsubsection{A Standard 3-state Motor Model}
 
-We consider a standard 3-state model of kinesin stepping\cite{Andreasson2015}
+We consider a standard 3-state model of a single kinesin stepping\cite{Andreasson2015}
 \[
 \begin{array}{ccccccc}
  & E\\
@@ -201,31 +157,31 @@ bound state and $E$ is the detached state. For simplicity, we only
 include forward stepping. Transition $B\to C$ represents the configuration
 change where the unbound head docks and attach to the binding site.
 So it is reasonable to make this step force dependent, where we assume
-a bell's law dependence. 
+a Bell's law dependence. 
 
 We assume there are two motors in a group for simplicity. In this
-case, $S_{i}=(x_{1}-x_{2},K_{1},K_{2})$ where $K_{1},K_{2}\in\{A,B,C,E\}$.
-$S_{i}$ transition to $S_{i+1}$ every time one of the motor make
+case, $S_{i}=(x_{1}-x_{2},K_{1},K_{2})$ where $K_{1},K_{2}$ are the chemical states of motors 1 and 2 and take values in the set $\{A,B,C,E\}$.
+$S_{i}$ transitions to $S_{i+1}$ every time one of the motor makes
 a kinetic transition. We can verify that $S_{i}$ satisfies the assumptions
 we imposed earlier.
 
-In theory, since motors can be any number of binding sites away with
+In theory, since motors can be any number of binding sites away from
 each other, the state space of $S_{i}$ is infinite, which is not
 ideal for computer implementation. In reality, the polymer (say DNA
 links in DNA orgami experiment) that connects to the motor, though
 flexible, should have a contour length that limits how far motors
 can be separated. In our implementation, since the contour length
 information is not available, we adopt another strategy to restrict
-state space be finite. We note that unrealistic far separation is
+state space be finite. We note that unrealistic far separation are
 rare and hence including them would only make negligible differences
-in our results. Therefore we gradually increase the number of possible
+in our results. Therefore, we gradually increase the number of possible
 configurations from close to far until changes in the calculated asymptotic
 results are tiny. In this way, $S_{i}$ has a finite state space and
 its transition matrix can be formed. Moreover it is irreducible and
 hence it has a unique stationary distribution. Aperiodicity is easily
-seen by tracking the number steps back to certain state. 
+seen by tracking the number steps back to certain state. {\bf JF: not sure about this last sentence--don't quite follow.}
 
-Assumption 2 is basically semi-Markov property which states that the
+Assumption 2 is basically the semi-Markov property which states that the
 next transition only depends on the current state but does not depend
 on previous states. 
 
@@ -234,12 +190,12 @@ where rate $\lambda$ is the sum of rates of all transitions out of
 $S_{i}$. Also, $Z_{i}\vert\{S_{j}\}_{j\in\mathbb{N}}=Z_{i}\vert S_{i}$
 is 0 if $S_{i}$ has no motors in state $C$ and 1/2 otherwise. 
 
-\subsubsection{a more complicated model with quasi-stationary approximation}
+\subsubsection{A More Complex Model with Quasi-stationary Approximation}
 
 One drawback of our semi-Markov approach is that the number of states
-grows factorially with number of motors. In experimental studies,
+grows factorially with number of motors. In experimental studies such as the DNA origami experiments described in the introduction,
 only a few motors are involved. So it is less a concern when modeling
-those situations. Moreover we can make quasi-stationary approximation
+those situations. Moreover we can make a quasi-stationary approximation
 to further mitigate the issue. In this case, consider a 4-state kinetic
 cycle (e.g. the one in \cite{Hughes2011}) 
 \[
@@ -253,7 +209,7 @@ where $E$ is detached state. In this case, completing a clockwise
 cycle means a forward step and vice versa for backward stepping. Although
 the end (or start) of a cycle can be arbitrary appointed, we have
 to be careful in order to use a quasi-stationary approximation. To
-make an quasi-stationary argument, we need to identify the rate limiting
+make a quasi-stationary argument, we need to identify the rate limiting
 transition in the cycle. Say transitions $A\rightleftharpoons F$
 is much slower than other transitions then we can think the cycle
 as follows 
@@ -277,7 +233,7 @@ transition for the pre-stepping states. The way around this issue
 is to consider the ``augmented chain'' $\{(S_{i},S_{i+1})\}_{i\in\mathbb{N}}$
 in which transitions of the original chain are now states. In this
 way, $Z_{j}|(S_{j},S_{j+1})$ is deterministic and distribution $p(\tau_{j}|(S_{j},S_{j+1}))$
-is not exponential any more but it can be found using the matrix computational
+is not exponential anymore but it can be found using the matrix computational
 method in \cite{Hughes2011}. Moreover, the state space can be further
 reduced if all motors are identical. Taking one step further, if we
 assume that the mixing time is negligible, i.e., the newly stepped
