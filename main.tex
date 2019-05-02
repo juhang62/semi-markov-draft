@@ -32,7 +32,7 @@ Intracellular transport is vital for the proper functioning of a biological cell
 In cellular environments, molecular motors work in a group to transport cargo{[}{]}. Motors are linked to a common cargo by a flexible polymer, forming a motor-cargo complex. When motors in the group drift apart, tension is built up between them; this tension is resolved by either detachment-reattachment or force-induced changes in the stepping rates of individual motors. In this sense, their motion is coupled together through the cargo, and keeping the complex together. When opposing motors are attached to a single cargo, intriguing bidirectional movements may be observed which have triggered substantial interest in studying transport of multiple coupled motors\cite{Hancock2014}. Although there have been many experimental and theoretical studies, how our understanding of a single motor can inform their behaviors in a motor-cargo complex remains unclear. 
 
 Stochastic modeling has a fruitful history in generating insight in
-cellular transport\cite{Bressloff2013}. In previous modeling studies on multiple motors, the details of underlying kinetics of individual motors and how the cargo load is shared between them have often been overlooked\cite{Miles2018,McKinley2012,Ohashi}. In this work, we propose an approach to study a group of molecular motors which takes into account microscopic details of individual motors. We treat loading forces shared between motors by making them dependent on motors' relative positions. We focus on kinesin since its molecular mechanisms are better understood, allowing us to incorporate existing kinetic models into the framework we will present. By formulating semi-Markov process and invoking a functional CLT, asymptotic quantities for the position of the motor-cargo complex can be easily calculated by a few computationally modest matrix operations. 
+cellular transport \cite{Bressloff2013}. In previous modeling studies on multiple motors, the details of underlying kinetics of individual motors and how the cargo load is shared between them have often been overlooked \cite{Miles2018a,McKinley2012,Ohashi2019}. In this work, we propose an approach to study a group of molecular motors which takes into account microscopic details of individual motors. We treat loading forces shared between motors by making them dependent on motors' relative positions. We focus on kinesin since its molecular mechanisms are better understood, allowing us to incorporate existing kinetic models into the framework we will present. By formulating semi-Markov process and invoking a functional CLT, asymptotic quantities for the position of the motor-cargo complex can be easily calculated by a few computationally modest matrix operations. 
 
 The paper is outlined as follows. We first describe the semi-Markov approach in general.  Then, we show how this framework can be applied to motor-cargo complexes. Taking advantage of its computational efficiency, we then conduct a study of the system with a wide range of parameter choices. 
 
@@ -108,7 +108,7 @@ D=\lim_{t\to\infty}\frac{\text{Var}(X(t))}{2t}=\frac{1}{2}(\frac{\mu_{Z}^{2}\sig
 where $\mu_{i}$ and $\sigma_{i}^{2}$ are mean and variance of $i\in\{Z,\tau\}$,
 and $\sigma_{Z,\tau}$ denotes covariance of $Z$ and $\tau$. {\bf I'm not crazy about this $\mu_{i}$ notation.} The
 application of a functional CLT in obtaining asymptotic quantities in studying
-molecular motors first appeared in \cite{Hughes2011} and semi-Markov
+molecular motors dated back to \cite{Hughes2011,Krishnan2011} and semi-Markov
 processes were introduced in \cite{Hughes2012} to study variable
 step sizes.{\bf JF: you may also want too cite Arjun Krishnan here.  Also, maybe look for other people's similar approaches to multiple motors.} Here we extend this method to a group of motors. We can
 find $\mu_{i}$ and $\sigma_{i}$ by finding the moments conditioned on the stationary distribution of $S_{i}$(details summarized in the appendix).
@@ -121,7 +121,7 @@ $m$ be the number of motors linked by a linear spring with constant
 $k_{i}$ to a common cargo which equilibriates instantaneously. It
 should be noted that the cargo is modeled as not having Brownian forces
 acting on it---which is not really the case---but also not an unreasonable assumption---effectively
-we are averaging a fast cargo {\bf JF: Cite multipaper with Pete, Scott, etc  Also, Elston}. Each of the motors walks on a MT without
+we are averaging a fast cargo. Similar approximation has been made in \cite{Peskin2000,Fricks2006,McKinley2012} {\bf JF: Cite multipaper with Pete, Scott, etc  Also, Elston}. Each of the motors walks on a MT without
 direct interactions with others, i.e., the only coupling is via the
 common cargo. Motors can detach and reattach to the MT. Motors share
 the loading force $F$ by force balance 
