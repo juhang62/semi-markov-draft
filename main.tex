@@ -516,7 +516,7 @@ cov(Z_{i},Z_{i+k}) & = & E[cov(Z_{i},Z_{i+k}\vert S_{i},S_{i+k})]+cov(E[Z_{i}\ve
 where the first term is zero because of aussumption2 and the second
 term is as follows
 \begin{eqnarray*}
-cov(E[Z_{i}\vert S_{i}],E[X_{i+k}\vert Z_{i+k}]) & = & (\text{\ensuremath{\boldsymbol{\mu}_{Z\vert S}}}-\mu_{Z}\boldsymbol{1})'\text{diag}(\pi_{S})P^{k}(\boldsymbol{\mu}_{Z\vert S}-\mu_{Z}\boldsymbol{1}),
+cov(E[Z_{i}\vert S_{i}],E[Z_{i+k}\vert S_{i+k}]) & = & (\text{\ensuremath{\boldsymbol{\mu}_{Z\vert S}}}-\mu_{Z}\boldsymbol{1})'\text{diag}(\pi_{S})P^{k}(\boldsymbol{\mu}_{Z\vert S}-\mu_{Z}\boldsymbol{1}),
 \end{eqnarray*}
 where $P$ is the transition matrix of the chain $\{S_{i}\}$. 
 
