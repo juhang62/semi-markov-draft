@@ -511,7 +511,7 @@ Var(Z_{i}) & = & E[Var(Z_{i}\vert S_{i})]+Var(E[Z_{i}\vert S_{i}])\\
 where $\boldsymbol{\eta}_{ZZ\vert S}$ is the second moment of $Z$
 conditioned on $S$. By law of total covariance, we have
 \begin{eqnarray*}
-cov(Z_{i},Z_{i+k}) & = & E[cov(Z_{i},Z_{i+k}\vert S_{i},S_{i+k})]+cov(E[Z_{i}\vert S_{i}],E[Z_{i+k}\vert S_{i+k}]),
+cov(Z_{i},Z_{i+k}) & = & E[cov(Z_{i},Z_{i+k}\vert S_{i},S_{i+k})]+cov(E[Z_{i}\vert S_{i},S_{i+k}],E[Z_{i+k}\vert S_{i}, S_{i+k}]),
 \end{eqnarray*}
 where the first term is zero because of aussumption2 and the second
 term is as follows
