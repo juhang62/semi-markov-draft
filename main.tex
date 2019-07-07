@@ -29,7 +29,7 @@ single kinesin motor, including detachment and reattachment events, to study the
 
 Intracellular transport is vital for the proper functioning of a biological cell. Passive diffusion is inadequate for long-distance transport of large cellular cargo, such as vesicles and organelles. Eukaryotic cells evolved an active transport system involving motor proteins which move on a track called microtubules (MTs) towing cargo to needed locations. Kinesin is one such motor protein. A kinesin has two motor domains, typically called heads, which can bind both ATP and the MT (cite some stuff). By utilizing the energy from ATP hydrolysis, a kinesin ``walks'' on the MT towards the plus end using its two heads in a hand-over-hand fashion, undergoing a sequence of tightly coupled mechano-chemical transitions. Many studies have been conducted on single motors and given us a good understanding of its function in isolation{[}{]}. The sequence of mechano-chemical transitions are described by kinetic models and are often formulated as a continuous-time Markov chain\cite{Clancy2011}. It is known that at least some of the transition rates are force dependent{[}{]}. 
 
-In cellular environments, molecular motors work in a group to transport cargo{[}{]}. Motors are linked to a common cargo by a flexible polymer, forming a motor-cargo complex. When motors in the group drift apart, tension is built up between them; this tension is resolved by either detachment-reattachment or force-induced changes in the stepping rates of individual motors. In this sense, their motion is coupled together through the cargo, and keeping the complex together. When opposing motors are attached to a single cargo, intriguing bidirectional movements may be observed which have triggered substantial interest in studying transport of multiple coupled motors\cite{Hancock2014}. Although there have been many experimental and theoretical studies, how our understanding of a single motor can inform their behaviors in a motor-cargo complex remains unclear. 
+In cellular environments, molecular motors work in a group to transport cargo{[}{]}. Motors are linked to a common cargo by a flexible polymer, forming a motor-cargo complex. When motors in the group drift apart, tension is built up between them; this tension is resolved by either detachment-reattachment or force-induced changes in the stepping rates of individual motors. In this sense, their motion is coupled together through the cargo, and keeping the complex together. When opposing motors are attached to a single cargo, intriguing bidirectional movements may be observed which have triggered substantial interest in studying transport of multiple coupled motors \cite{Hancock2014}. Although there have been many experimental and theoretical studies, how our understanding of a single motor can inform their behaviors in a motor-cargo complex remains unclear. 
 
 Stochastic modeling has a fruitful history in generating insight in
 cellular transport \cite{Bressloff2013}. In previous modeling studies on multiple motors, the details of underlying kinetics of individual motors and how the cargo load is shared between them have often been overlooked \cite{Miles2018a,McKinley2012,Ohashi2019}. In this work, we propose an approach to study a group of molecular motors which takes into account microscopic details of individual motors. We treat loading forces shared between motors by making them dependent on motors' relative positions. We focus on kinesin since its molecular mechanisms are better understood, allowing us to incorporate existing kinetic models into the framework we will present. By formulating semi-Markov process and invoking a functional CLT, asymptotic quantities for the position of the motor-cargo complex can be easily calculated by a few computationally modest matrix operations. 
@@ -38,7 +38,7 @@ The paper is outlined as follows. We first describe the semi-Markov approach in 
 
 \section{Semi-Markov Framework for Molecular Motor Models}
 
-In this section, we present a previously established framework for molecular motor models that break each kinetic cycle into a time and a displacement (cite my stuff and others) and then to use central limit theory to establish asymptotic quantities typically measured in experiments.  The goal of this paper is to generalize the technique to motor-carg complexes.
+In this section, we present a previously established framework for molecular motor models that break each kinetic cycle into a time and a displacement \cite{Hughes2011,Hughes2012}, and then to use central limit theory to establish asymptotic quantities typically measured in experiments.  The goal of this paper is to generalize the technique to motor-carg complexes.
 
 We consider a Markov chain $\{S_{i}\}_{i\in\mathbb{N}}$ where $S_{i}$
 represents the relative position and the kinetic state (together called the
@@ -48,17 +48,23 @@ the motor transitions through biochemical states. Note that every time
 a motor changes its kinetic state, the group state changes while the
 relative position only changes if the motor makes a transition which
 results in a physical step. Let $\tau_{i}$ be the time for the transition
-of $S_{i}\to S_{i+1}$ to happen and $Z_{i}$ be the change in the
+of $S_{i-1}\to S_{i}$ to happen and $Z_{i}$ be the change in the
 group position (arithmetic average of positions of all motors) resulting
-from this transition. If we assume the transition from $S_{i}\to S_{i+1}$ follows
+from this transition (Figure \ref{fig:diagram}). If we assume the transition from $S_{i-1}\to S_{i}$ follows
 every change in the group state due to a transition in the underlying
 kinetic states of individual motors, then $\tau_{i}$ is a exponential
 random variable. {\bf JF: I don't quite understand the following two sentences.}  In general, neither the state space of $\{S_{i}\}$
 needs to the set of all possible group states and nor does the transition
-of $S_{i}\to S_{i+1}$ to exactly follow every change in the group
+of $S_{i-1}\to S_{i}$ to exactly follow every change in the group
 state due to the individual motors' kinetic transitions. Being aware
 of this sometimes would help simplify calculation as we will see later. 
 {\bf JF: I think you need to explain the dependency between the S, Z, and tau in words--specifically that they form a three dimensional Markov chain--where Z, tau at the current time depend only on S at the previous time.}
+
+\begin{figure}
+\centerline{\includegraphics[scale=0.3]{figures/diagram.png}}
+\caption{\label{fig:diagram}Transition graph}
+\end{figure}
+
 
 Let $X(t)$ be the group position at time $t$. Using the variables
 defined above, we can write $X(t)=\sum_{i=1}^{N(t)}Z_{i}$ where $N(t)=\inf\{n\in\mathbb{N}:\sum_{i=1}^{n}\tau_{i}\ge t\}$.
@@ -82,13 +88,8 @@ for which we impose the following assumptions:
 \begin{enumerate}
 \item $S_{i}$ has a stationary distribution on a finite state space and
 is aperiodic. 
-\item conditioned on a sequence $\{S_{i}\}_{i\in\mathbb{N}}$, the sequence
-$\{(Z_{i},\tau_{i})\}_{i\in\mathbb{N}}$ are independent.
-\item $\{(Z_i, \tau_i, S_i)'\}$ is a Markov chain whose distribution at time $i$ conditioned on the chain at $i-1$ depends only on $S_{i-1}$.
-\item $P(Z_{i}\vert\{S_{j}\}_{j\in\mathbb{N}})=P(Z_{i}\vert S_{i})$ and
-$P(\tau_{i}\vert\{S_{j}\}_{j\in\mathbb{N}})=P(\tau_{i}\vert S_{i})$ 
-\item first two moments of $Z_{i}\vert S_{i}$ and $\tau_{i}\vert S_{i}$
-are finite and known
+\item first two moments of $Z_{i}\vert S_{i},S_{i-1}$ and $\tau_{i}\vert S_{i},S_{i-1}$ are known and finite
+\item the dependence between variables are indicated by the graph in Figure \ref{fig:diagram}.
 \end{enumerate}
 Scaling time with a factor $n$ and length by $\sqrt{n},$ we have by functional
 CLT 
@@ -103,17 +104,15 @@ V=\lim_{t\to\infty}\frac{E[X(t)]}{t}=\frac{\mu_{z}}{\mu_{\tau}}\label{eq:V}
 \end{equation}
  and 
 \begin{equation}
-D=\lim_{t\to\infty}\frac{\text{Var}(X(t))}{2t}=\frac{1}{2}(\frac{\mu_{Z}^{2}\sigma_{\tau}^{2}}{\mu_{\tau}^{3}}+\frac{\sigma_{Z}^{2}}{\mu_{\tau}}-2\frac{\mu_{Z}\sigma_{Z,\tau}}{\mu_{\tau}^{2}})\label{eq:D}
+D=\lim_{t\to\infty}\frac{\text{Var}(X(t))}{2t}=\frac{1}{2}(\frac{\mu_{Z}^{2}\sigma_{\tau}^{2}}{\mu_{\tau}^{3}}+\frac{\sigma_{Z}^{2}}{\mu_{\tau}}-2\frac{\mu_{Z}\sigma_{Z\tau}}{\mu_{\tau}^{2}})\label{eq:D}
 \end{equation}
-where $\mu_{i}$ and $\sigma_{i}^{2}$ are mean and variance of $i\in\{Z,\tau\}$,
-and $\sigma_{Z,\tau}$ denotes covariance of $Z$ and $\tau$. {\bf I'm not crazy about this $\mu_{i}$ notation.} The
+where $\mu_{Z},\mu_{\tau},\sigma_{Z}^{2},\sigma_{\tau}^{2}$ and $\sigma_{Z\tau}^{2}$ are mean and variance means and (cov-)variance arising from the application of functional CLT (see appendix for detailed derivation). The
 application of a functional CLT in obtaining asymptotic quantities in studying
 molecular motors dated back to \cite{Hughes2011,Krishnan2011} and semi-Markov
 processes were introduced in \cite{Hughes2012} to study variable
-step sizes.{\bf JF: you may also want too cite Arjun Krishnan here.  Also, maybe look for other people's similar approaches to multiple motors.} Here we extend this method to a group of motors. We can
-find $\mu_{i}$ and $\sigma_{i}$ by finding the moments conditioned on the stationary distribution of $S_{i}$(details summarized in the appendix).
+step sizes.{\bf JF: Also, maybe look for other people's similar approaches to multiple motors.} Here we extend this method to a group of motors.
 
-\subsection{Two Examples }
+\subsection{Two Examples}
 
 We illustrate the use of the semi-Markov approach by applying it to two
 kinetic models. First, we state the common modeling assumptions. Let
@@ -121,7 +120,7 @@ $m$ be the number of motors linked by a linear spring with constant
 $k_{i}$ to a common cargo which equilibriates instantaneously. It
 should be noted that the cargo is modeled as not having Brownian forces
 acting on it---which is not really the case---but also not an unreasonable assumption---effectively
-we are averaging a fast cargo. Similar approximation has been made in \cite{Peskin2000,Fricks2006,McKinley2012} {\bf JF: Cite multipaper with Pete, Scott, etc  Also, Elston}. Each of the motors walks on a MT without
+we are averaging a fast cargo. Similar approximation has been made in \cite{Peskin2000,Fricks2006,McKinley2012}. Each of the motors walks on a MT without
 direct interactions with others, i.e., the only coupling is via the
 common cargo. Motors can detach and reattach to the MT. Motors share
 the loading force $F$ by force balance 
@@ -135,7 +134,7 @@ motor is $k_{i}x_{i}.$ In this modeling framework, the state $S_{i}$
 consisting of 
 \begin{itemize}
 \item relative positions of $m$ motors (Here we take it exactly as $\{x_{i}\}_{i\in1...m}$
-though some slack regime possibly exists. {\bf JF: what does slack regime mean} ) 
+though some slack regime possibly exists, where the displacement between the motor and the cargo does not induce the displacement of the connecting spring. {\bf JF: what does slack regime mean. LH: is this explanation ok?} ) 
 \item their kinetic states (including detachment as a state). 
 \end{itemize}
 Moreover, in the kinetic model we wish to adopt, at least one of the
@@ -143,7 +142,7 @@ transitions is force-dependent and its rate is thus affected by which motors are
 
 \subsubsection{A Standard 3-state Motor Model}
 
-We consider a standard 3-state model of a single kinesin stepping\cite{Andreasson2015}
+We consider a standard 3-state model of a single kinesin stepping \cite{Andreasson2015}
 \[
 \begin{array}{ccccccc}
  & E\\
@@ -179,16 +178,12 @@ configurations from close to far until changes in the calculated asymptotic
 results are tiny. In this way, $S_{i}$ has a finite state space and
 its transition matrix can be formed. Moreover it is irreducible and
 hence it has a unique stationary distribution. Aperiodicity is easily
-seen by tracking the number steps back to certain state. {\bf JF: not sure about this last sentence--don't quite follow.}
+seen by tracking the number steps back to certain state. For example, looking at state A, it can take a 2-step loop (A to B back to A) or a 3-step loop (A to B to C to A). The greatest common divisor of 2 and 3 is 1 and hence by definition the chain is aperiodic. 
 
-Assumption 2 is basically the semi-Markov property which states that the
-next transition only depends on the current state but does not depend
-on previous states. 
-
-Assumption 3 is also readily verified. First we note that $\tau_{i}\vert\{S_{j}\}_{j\in\mathbb{N}}=\tau_{i}\vert S_{i}\sim Exp(\text{\ensuremath{\lambda}})$
+Assumption 2 is by our modeling setup and readily verified. First we note that $\tau_{i}\vert S_{i},S_{i-1}=\tau_{i}\vert S_{i-1}\sim Exp(\text{\ensuremath{\lambda}})$
 where rate $\lambda$ is the sum of rates of all transitions out of
-$S_{i}$. Also, $Z_{i}\vert\{S_{j}\}_{j\in\mathbb{N}}=Z_{i}\vert S_{i}$
-is 0 if $S_{i}$ has no motors in state $C$ and 1/2 otherwise. 
+$S_{i}$. Also, $Z_{i}\vert {S_i,S_{i-1}}$
+is 0 if $S_{i}$ has no motors in state $C$ and $1/m$ otherwise, where $m$ is the number of motors in the group. 
 
 \subsubsection{A More Complex Model with Quasi-stationary Approximation}
 
@@ -509,48 +504,36 @@ Var(Z_{i}) & = & E[Var(Z_{i}\vert S_{i})]+Var(E[Z_{i}\vert S_{i}])\\
  & = & \boldsymbol{\pi}_{S}'\boldsymbol{\eta}{}_{ZZ\vert S}-\mu_{Z}^{2},
 \end{eqnarray*}
 where $\boldsymbol{\eta}_{ZZ\vert S}$ is the second moment of $Z$
-conditioned on $S$. By law of total covariance, we have
+conditioned on $S$. By law of total covariance, we can find the covariance $cov(Z_i,Z_{i+k})$. To exploit the conditional independence as in Figure \ref{fig:diagram}, we choose to condition on $S_{i-1}$ and $S_i$ so that
 \begin{eqnarray*}
-cov(Z_{i},Z_{i+k}) & = & E[cov(Z_{i},Z_{i+k}\vert S_{i},S_{i+k})]+cov(E[Z_{i}\vert S_{i},S_{i+k}],E[Z_{i+k}\vert S_{i}, S_{i+k}]),
+cov(Z_{i},Z_{i+k}) & = & E[cov(Z_{i},Z_{i+k}\vert S_{i-1},S_{i})]+cov(E[Z_{i}\vert S_{i-1},S_{i}],E[Z_{i+k}\vert S_{i-1}, S_{i}]),
 \end{eqnarray*}
-where the first term is zero because of aussumption2 and the second
+where the first term is zero because of conditional independence  and the second
 term is as follows
 \begin{eqnarray*}
-cov(E[Z_{i}\vert S_{i}],E[Z_{i+k}\vert S_{i+k}]) & = & (\text{\ensuremath{\boldsymbol{\mu}_{Z\vert S}}}-\mu_{Z}\boldsymbol{1})'\text{diag}(\pi_{S})P^{k}(\boldsymbol{\mu}_{Z\vert S}-\mu_{Z}\boldsymbol{1}),
+cov(E[Z_{i}\vert S_{i}],E[Z_{i+k}\vert S_{i+k}]) & = & \boldsymbol{1}'  \Pi (R_Z \circ P) P^{k-1} (R_Z \circ P) \boldsymbol{1},
 \end{eqnarray*}
-where $P$ is the transition matrix of the chain $\{S_{i}\}$. 
+where $\boldsymbol{1}$ is a vector of all one's, $\Pi=\text{diag}(\boldsymbol{\pi}_S)$ is a diagonal matrix with diagonal $\boldsymbol{\pi}_S$, $P$ is the transition matrix of the chain $\{S_{i}\}$, $\circ$ denotes Hadamard product and $R_Z$ is a matrix with its component as 
+\begin{eqnarray*}
+(R_Z)_{\alpha \beta} & = & \sum_z zp(Z_i=z \vert S_{i-1}=\alpha,S_i=\beta)-\tilde{\mu} \\
+\tilde{\mu} & = & \sum_{\alpha,\beta} \sum_z zp(Z_i=z \vert S_{i-1}=\alpha,S_i=\beta) ,
+\end{eqnarray*}
 
-We can show that
+Let $M$ is a $m\times m$ matrix with all entries being $1/m$. We note that
 \begin{equation}
-(\text{\ensuremath{\boldsymbol{\mu}_{Z\vert S}}}-\mu_{Z}\boldsymbol{1})'\text{diag}(\boldsymbol{\pi}_{S})P^{k}(\boldsymbol{\mu}_{Z\vert S}-\mu_{Z}\boldsymbol{1})=(\text{\ensuremath{\boldsymbol{\mu}_{Z\vert S}}}-\mu_{Z}\boldsymbol{1})'\text{diag}(\boldsymbol{\pi}_{S})(P-M)^{k}(\boldsymbol{\mu}_{Z\vert S}-\mu_{Z}\boldsymbol{1}),\label{eq:(P-M)^k}
+\boldsymbol{1}'  \Pi (R \circ P) P^{k-1} (R \circ P) \boldsymbol{1} = \boldsymbol{1}'  \Pi (R \circ P) (P-M)^{k-1} (R \circ P) \boldsymbol{1},
+\label{eq:(P-M)^k}
 \end{equation}
- where $M$ is a $m\times m$ matrix with all entries being $1/m$.
-To see this, we let $\boldsymbol{d}=\mu_{Z\vert S}-\mu_{Z}$ and $\Pi=\text{diag}(\text{\ensuremath{\pi_{S}}})$
-to simplify notations. We need to use two facts: $\boldsymbol{d}'\Pi M=\boldsymbol{0}^{T}$
-and $MP'=M$. We first consider $k=2$ 
-\begin{eqnarray*}
-\boldsymbol{d}'\Pi P^{2}\boldsymbol{d} & = & \boldsymbol{d}'\Pi(M+P-M)^{2}\boldsymbol{d}\\
- & = & \boldsymbol{d}'\Pi\big(M^{2}+M(P-M)+(P-M)M+(P-M)^{2}\big)\boldsymbol{d},
-\end{eqnarray*}
-where the first two terms are zero and the third term is also zero
-as shown below 
-\begin{eqnarray*}
-\boldsymbol{d}'\Pi\big((P-M)M\big)\boldsymbol{d} & = & \boldsymbol{d}'\Pi PM\boldsymbol{d}\\
- & = & \boldsymbol{d}'M'P'\Pi'\boldsymbol{d}\\
- & = & \boldsymbol{d}'MP'\Pi\boldsymbol{d}\\
- & = & \boldsymbol{d}'M\Pi\boldsymbol{d}=0.
-\end{eqnarray*}
- Thus $\boldsymbol{d}'\Pi P^{2}\boldsymbol{d}=\boldsymbol{d}'\Pi(P-M)^{2}\boldsymbol{d}.$
-(\ref{eq:(P-M)^k}) follows by induction. We further note that the
-spectral radius $\rho(P-M)<1$ so that $\sum_{k=0}^{\infty}(P-M)^{k}=(I-P+M)^{-1}$.
+which is deduced from the fact that $PM=M$ and $\boldsymbol{1}'\Pi (R \circ P) \boldsymbol{1}$. We further note that the
+spectral radius $\rho(P-M)<1$ (aperiodicity) so that $\sum_{k=0}^{\infty}(P-M)^{k}=(I-P+M)^{-1}$.
 Hence 
 \begin{eqnarray*}
-\sum_{k=0}^{\infty}cov(Z_{i},Z_{i+k}) & = & (\text{\ensuremath{\boldsymbol{\mu}_{Z\vert S}}}-\mu_{Z}\boldsymbol{1})'\text{diag}(\boldsymbol{\pi}_{S})\big((I-P+M)^{-1}-I\big)(\boldsymbol{\mu}_{Z\vert S}-\mu_{Z}).
+\sum_{k=0}^{\infty}cov(Z_{i},Z_{i+k}) & = & \boldsymbol{1}'  \Pi (R \circ P) (I-P+M)^{-1} (R \circ P) \boldsymbol{1}.
 \end{eqnarray*}
 
 Putting things together, we have found 
 \[
-\Sigma_{11}=2(\text{\ensuremath{\boldsymbol{\mu}_{Z\vert S}}}-\mu_{Z}\boldsymbol{1})'\text{diag}(\boldsymbol{\pi}_{S})(I-P+M)^{-1}(\boldsymbol{\mu}_{Z\vert S}-\mu_{Z}\boldsymbol{1})-\boldsymbol{\pi}'\boldsymbol{\eta}{}_{ZZ\vert S}+\mu_{Z}^{2}.
+\Sigma_{11}=2 [ \boldsymbol{1}'  \Pi (R \circ P) (I-P+M)^{-1} (R \circ P) \boldsymbol{1} ] + \boldsymbol{\pi}'\boldsymbol{\eta}{}_{ZZ\vert S} - \mu_{Z}^{2}.
 \]
  $\Sigma_{22}$ has the same expression for $\tau$. To find $\Sigma_{12}$,
 we note that 
@@ -559,9 +542,8 @@ we note that
 \]
 Similar calculation using law of total covariance gives 
 \begin{eqnarray*}
-\Sigma_{12} & = & (\text{\ensuremath{\boldsymbol{\mu}_{Z\vert S}}}-\mu_{Z}\boldsymbol{1})'\text{diag}(\boldsymbol{\pi}_{S})(I-P+M)^{-1}(\boldsymbol{\mu}_{\tau\vert S}-\mu_{\tau}\boldsymbol{1})\\
- &  & +(\text{\ensuremath{\boldsymbol{\mu}_{\tau\vert S}}}-\mu_{\tau}\boldsymbol{1})'\text{diag}(\boldsymbol{\pi}_{S})(I-P+M)^{-1}(\boldsymbol{\mu}_{Z\vert S}-\mu_{Z}\boldsymbol{1})\\
- &  & -\boldsymbol{\pi}_{S}'\boldsymbol{\eta}_{Z\tau\vert S}+\mu_{Z}\mu_{\tau}.
+\Sigma_{12} & = & [ \boldsymbol{1}'  \Pi (R_Z \circ P) (I-P+M)^{-1} (R_{\tau} \circ P) \boldsymbol{1} ]  + 
+\\ & & [ \boldsymbol{1}'  \Pi (R_{\tau} \circ P) (I-P+M)^{-1} (R_Z \circ P) \boldsymbol{1} ]  + \boldsymbol{\pi}_{S}'\boldsymbol{\eta}_{Z\tau\vert S}-\mu_{Z}\mu_{\tau}.
 \end{eqnarray*}
 
 \bibliographystyle{plain}
