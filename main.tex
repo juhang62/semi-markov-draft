@@ -88,7 +88,7 @@ for which we impose the following assumptions:
 \begin{enumerate}
 \item $S_{i}$ has a stationary distribution on a finite state space and
 is aperiodic. 
-\item first two moments of $Z_{i}\vert S_{i},S_{i-1}$ and $\tau_{i}\vert S_{i},S_{i-1}$ are known and finite
+\item the first two moments of $Z_i \vert S_{i-1}$, $\tau_i \vert S_{i-1}$ and the first moment of $Z_{i}\vert S_{i},S_{i-1}$ and $\tau_{i}\vert S_{i},S_{i-1}$ are finite and can be computed.
 \item the dependence between variables are indicated by the graph in Figure \ref{fig:diagram}.
 \end{enumerate}
 Scaling time with a factor $n$ and length by $\sqrt{n},$ we have by functional
@@ -218,16 +218,8 @@ assume that all other motors are in a stationary distribution of $A\rightlefthar
 The number of kinetic states of a $m-$motor system is $2m$, (e.g.
 for two motors we have $AS,FS,SA,SF$ where $S$ represents ``stationary
 state''. We call this approximation ``qss2''. It drastically reduces
-the state space. However it can be seen that the third assumption
-is not met, i.e., $P(Z_{i}\vert\{S_{j}\}_{j\in\mathbb{N}})=P(Z_{i}\vert\{S_{i},S_{i+1}\})\neq P(Z_{j}\vert S_{j})$
-(same for $\tau$). For example, if $S_{i}=0AS$, there are four possible
-$S_{i+1},$ i.e., $1AS,-1FS,-1SA,1SF$, conditioned on which we have
-$Z_{i}=+1,-1,+1,-1$ respectively. It should be pointed out that this
-issue arises more generally when the stepping is not the only possible
-transition for the pre-stepping states. The way around this issue
-is to consider the ``augmented chain'' $\{(S_{i},S_{i+1})\}_{i\in\mathbb{N}}$
-in which transitions of the original chain are now states. In this
-way, $Z_{j}|(S_{j},S_{j+1})$ is deterministic and distribution $p(\tau_{j}|(S_{j},S_{j+1}))$
+the state space. In this
+way, $Z_{j}|(S_{j-1},S_{j})$ is deterministic and distribution $p(\tau_{j}|(S_{j-1},S_{j}))$
 is not exponential anymore but it can be found using the matrix computational
 method in \cite{Hughes2011}. Moreover, the state space can be further
 reduced if all motors are identical. Taking one step further, if we
@@ -490,17 +482,20 @@ matrix
 \]
 Based on assumption1, $S_{i}$ has a unique stationary distribution
 $\boldsymbol{\pi}_{S}$. Based on assumption2, we know the first two
-moments of $(Z_{i},\tau_{i})$ conditioned on $S_{i}$ which we denote
-as $\boldsymbol{\mu}_{Z\vert S},\boldsymbol{\mu}_{\tau\vert S},\boldsymbol{\eta}_{ZZ\vert S},\boldsymbol{\eta}_{\tau\tau\vert S},\boldsymbol{\eta}_{Z\tau\vert S}$.
-It is straightforward that $\mu_{Z}=\boldsymbol{\pi}_{S}'\boldsymbol{\mu}_{Z\vert S}$
-and $\mu_{\tau}=\boldsymbol{\pi}_{S}'\boldsymbol{\mu}_{\tau\vert S}$.
+moments of $(Z_{i},\tau_{i})$ conditioned on $S_{i-1}$,  denoted as
+as $\boldsymbol{\mu}_{Z\vert S},\boldsymbol{\mu}_{\tau\vert S},\boldsymbol{\eta}_{ZZ\vert S},\boldsymbol{\eta}_{\tau\tau\vert S},\boldsymbol{\eta}_{Z\tau\vert S}$, and their first moment conditioned on $S_{i-1},S_{i}$, denoted as $\Xi_Z$ and $\Xi_{\tau}$, which are matrices with components  
+$$(\Xi_Z)_{\alpha,\beta}=E[Z_i \vert S_{i-1}=\alpha,S_{i}=\beta].$$
+
+It is straightforward that $$\mu_{Z}=\boldsymbol{\pi}_{S}'\boldsymbol{\mu}_{Z\vert S}$$
+and $$\mu_{\tau}=\boldsymbol{\pi}_{S}'\boldsymbol{\mu}_{\tau\vert S}.$$
+
 Next we focus on the first component of $\Sigma$ for which we have
 \begin{eqnarray*}
 \Sigma_{11} & = & Var(Z_{i})+2\sum_{k=1}^{\infty}cov(Z_{i},Z_{i+k}).
 \end{eqnarray*}
 By law of total variance, we have 
 \begin{eqnarray*}
-Var(Z_{i}) & = & E[Var(Z_{i}\vert S_{i})]+Var(E[Z_{i}\vert S_{i}])\\
+Var(Z_{i}) & = & E[Var(Z_{i}\vert S_{i-1})]+Var(E[Z_{i}\vert S_{i-1}])\\
  & = & \boldsymbol{\pi}_{S}'\boldsymbol{\eta}{}_{ZZ\vert S}-\mu_{Z}^{2},
 \end{eqnarray*}
 where $\boldsymbol{\eta}_{ZZ\vert S}$ is the second moment of $Z$
@@ -511,12 +506,11 @@ cov(Z_{i},Z_{i+k}) & = & E[cov(Z_{i},Z_{i+k}\vert S_{i-1},S_{i})]+cov(E[Z_{i}\ve
 where the first term is zero because of conditional independence  and the second
 term is as follows
 \begin{eqnarray*}
-cov(E[Z_{i}\vert S_{i}],E[Z_{i+k}\vert S_{i+k}]) & = & \boldsymbol{1}'  \Pi (R_Z \circ P) P^{k-1} (R_Z \circ P) \boldsymbol{1},
+cov(E[Z_{i}\vert S_{i-1},S_{i}],E[Z_{i+k}\vert S_{i-1},S_{i}]) & = & \boldsymbol{1}'  \Pi (R_Z \circ P) P^{k-1} (R_Z \circ P) \boldsymbol{1},
 \end{eqnarray*}
 where $\boldsymbol{1}$ is a vector of all one's, $\Pi=\text{diag}(\boldsymbol{\pi}_S)$ is a diagonal matrix with diagonal $\boldsymbol{\pi}_S$, $P$ is the transition matrix of the chain $\{S_{i}\}$, $\circ$ denotes Hadamard product and $R_Z$ is a matrix with its component as 
 \begin{eqnarray*}
-(R_Z)_{\alpha \beta} & = & \sum_z zp(Z_i=z \vert S_{i-1}=\alpha,S_i=\beta)-\tilde{\mu} \\
-\tilde{\mu} & = & \sum_{\alpha,\beta} \sum_z zp(Z_i=z \vert S_{i-1}=\alpha,S_i=\beta) ,
+(R_Z)_{\alpha \beta} & = & (\Xi_Z)_{\alpha \beta} - \sum_{\alpha.\beta} (\Xi_Z)_{\alpha \beta} p(S_i=\beta \vert S_{i-1}=\alpha) p(S_{i-1}=\alpha),
 \end{eqnarray*}
 
 Let $M$ is a $m\times m$ matrix with all entries being $1/m$. We note that
@@ -524,7 +518,7 @@ Let $M$ is a $m\times m$ matrix with all entries being $1/m$. We note that
 \boldsymbol{1}'  \Pi (R \circ P) P^{k-1} (R \circ P) \boldsymbol{1} = \boldsymbol{1}'  \Pi (R \circ P) (P-M)^{k-1} (R \circ P) \boldsymbol{1},
 \label{eq:(P-M)^k}
 \end{equation}
-which is deduced from the fact that $PM=M$ and $\boldsymbol{1}'\Pi (R \circ P) \boldsymbol{1}$. We further note that the
+which is deduced from the fact that $PM=M$ and $\boldsymbol{1}'\Pi (R \circ P) \boldsymbol{1}=0$. We further note that the
 spectral radius $\rho(P-M)<1$ (aperiodicity) so that $\sum_{k=0}^{\infty}(P-M)^{k}=(I-P+M)^{-1}$.
 Hence 
 \begin{eqnarray*}
