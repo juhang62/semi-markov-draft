@@ -6,6 +6,7 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{graphicx}
+\usepackage{tabularx}
 
 \makeatletter
 
@@ -38,7 +39,7 @@ The paper is outlined as follows. We first describe the semi-Markov approach in 
 
 \section{Semi-Markov Framework for Molecular Motor Models}
 
-In this section, we present a previously established framework for molecular motor models that break each kinetic cycle into a time and a displacement \cite{Hughes2011,Hughes2012}, and then to use central limit theory to establish asymptotic quantities typically measured in experiments.  The goal of this paper is to generalize the technique to motor-carg complexes.
+In this section, we present a previously established framework for molecular motor models that break each kinetic cycle into a time and a displacement \cite{Hughes2011,Hughes2012}, and then to use central limit theory to establish asymptotic quantities typically measured in experiments.  The goal of this paper is to generalize the technique to motor-cargo complexes.
 
 We consider a Markov chain $\{S_{i}\}_{i\in\mathbb{N}}$ where $S_{i}$
 represents the relative position and the kinetic state (together called the
@@ -52,9 +53,9 @@ of $S_{i-1}\to S_{i}$ to happen and $Z_{i}$ be the change in the
 group position (arithmetic average of positions of all motors) resulting
 from this transition (Figure \ref{fig:diagram}). If we assume the transition from $S_{i-1}\to S_{i}$ follows
 every change in the group state due to a transition in the underlying
-kinetic states of individual motors, then $\tau_{i}$ is a exponential
+kinetic states of individual motors, then $\tau_{i}$ is an exponential
 random variable. {\bf JF: I don't quite understand the following two sentences.}  In general, neither the state space of $\{S_{i}\}$
-needs to the set of all possible group states and nor does the transition
+needs to be the set of all possible group states and nor does the transition
 of $S_{i-1}\to S_{i}$ to exactly follow every change in the group
 state due to the individual motors' kinetic transitions. Being aware
 of this sometimes would help simplify calculation as we will see later. 
@@ -171,7 +172,7 @@ links in DNA orgami experiment) that connects to the motor, though
 flexible, should have a contour length that limits how far motors
 can be separated. In our implementation, since the contour length
 information is not available, we adopt another strategy to restrict
-state space be finite. We note that unrealistic far separation are
+state space be finite. We note that unrealistic far separation is
 rare and hence including them would only make negligible differences
 in our results. Therefore, we gradually increase the number of possible
 configurations from close to far until changes in the calculated asymptotic
@@ -183,11 +184,11 @@ seen by tracking the number steps back to certain state. For example, looking at
 Assumption 2 is by our modeling setup and readily verified. First we note that $\tau_{i}\vert S_{i},S_{i-1}=\tau_{i}\vert S_{i-1}\sim Exp(\text{\ensuremath{\lambda}})$
 where rate $\lambda$ is the sum of rates of all transitions out of
 $S_{i}$. Also, $Z_{i}\vert {S_i,S_{i-1}}$
-is 0 if $S_{i}$ has no motors in state $C$ and $1/m$ otherwise, where $m$ is the number of motors in the group. 
+is 0 if $S_{i-1} \to S_{i}$ does not involve any motor stepping  and $1/m$ otherwise, where $m$ is the number of motors in the group. 
 
 \subsubsection{A More Complex Model with Quasi-stationary Approximation}
 
-One drawback of our semi-Markov approach is that the number of states
+One drawback of the previous set-up is that the number of states
 grows factorially with number of motors. In experimental studies such as the DNA origami experiments described in the introduction,
 only a few motors are involved. So it is less a concern when modeling
 those situations. Moreover we can make a quasi-stationary approximation
@@ -229,7 +230,7 @@ is no need to track the kinetic state of motors any more so that the
 method can easily handle up to five motors . We call this approximation
 ``qss1''. 
 
-\section{Modeling experiments}
+\section{Modeling Experiments}
 
 In this section, we conduct in silicon experiments to study various
 behaviors of the two models we introduced previously. This extensive
@@ -240,7 +241,7 @@ the semi-Markov approach.
 
 For this model, we consider a 2-motor system for simplicity. We adapt
 biological relevant parameters found in literature shown in table\ref{tab:parameters}.
-In Fig\ref{fig:FV 1-2-motor}, the single-motor kinetic model gives
+In Figure \ref{fig:FV 1-2-motor}, the single-motor kinetic model gives
 a force-velocity curve of a typical sigmoid shape. It can be seen
 that the motor is insensitive to small hindering (positive) force
 and that the assisting (negative) force only speeds up the motor slightly.
@@ -249,11 +250,11 @@ being rate-limiting while the other is limited by force-independent
 transitions. The diffusivity curve has a similar shape. We found that
 a 2-motor system is in general slower than 1-motor system when operated
 under assisting or small hindering force, which agrees with previous
-studies\cite{McKinley2012}. This indicates that two motors tend to
+studies \cite{McKinley2012}. This indicates that two motors tend to
 interfere with each other. This is expected considering the characteristics
 of the single-motor force-velocity relation, i.e., the leading motor
 would be slowed down by the drag caused by the lagging motor while
-the dragging motor would not speed up because of the assistance from
+the trailing motor would not speed up because of the assistance from
 the leading motor. However, when the 2-motor system is under heavy
 load, they tend to share the load and can go faster than 1-motor system.
 We call the force at which the force-velocity curve of the 2-motor
@@ -261,23 +262,19 @@ system intersects with that of the 1-motor system the ``compensation
 force''. Beyond compensation force, the multiple-motor system is
 faster than the 1-motor system. It is an interesting quantity to study
 since it may have something to do with optimality of the cell, i.e.,
-how many motors is optimal to transport certain size of cargo. We
+how many motors is optimal to transport certain size of cargo. \iffalse We
 also note that including detachment in the 2-motor model makes some
 qualitative change in the force velocity curve. The monotonicity of
 the force-velocity is lost: it dips down at high assisting force.
 It is likely due to the fact that 2-motor system tend to have more
 frequent detachment under large force. Since detachment plays an important
-role, we consider the model with detachment henceforth. 
+role, we consider the model with detachment henceforth. \fi
 
-Second moment is less often studied in experimental studies. In Fig\ref{fig:M2},
+Second moment is less often studied in experimental studies. In Figure \ref{fig:M2},
 we show an example in which difference in second moment of the single
 motor behavior can give arise salient differences in the first moment
-of the group behavior. As we can see, the first parameter set(kab=500)
-gives monotonic force-velocity curve while we lose monotonicity for
-the second parameter set (kab=5000). So the in first parameter set,
-force-dependent transition is the dominant rate-limiting step for
-the range of force we considered while in the second parameter set
-other transitions is rate-limiting when assistance force is large.
+of the group behavior. Since the kinetic model is simple, we can come up with two parameter sets that have same first moment (force-velocity curve) of 1-motor system. The parameter values are summarized in Table \ref{tab:parameters} under the name "generic kinesin".  As we can see for 2-motor system, the first parameter set($k_{ab}=500$) differs from 
+the second parameter set ($k_{ab}=5000$) when the loading force is assisting or small. 
 In general, we see that the loading force decreases diffusivity and
 that the diffusivities of 1-motor and 2-motor systems tend to converge
 at large loading force. It should also be noted that force-velocity
@@ -291,23 +288,15 @@ We hope our theoretical study will stimulate experimental studies
 on this front. We also want to find out effects of asymmetry in detachment
 in response to the assisting and hindering force on compensation.
 We suspect that favorable detachment under assisting load can result
-in increase in velocity. As in Fig\ref{fig:fcomp surf}, our results
-show that asymmetry in detachment rate plays only a marginal role
-when using reported kinesin detachment rate. It asserts more influence
-on compensation force when we use large detachment rate. It should
+in increase in velocity. As in Figure \ref{fig:fcomp surf}, our results
+show that asymmetry in detachment rate plays only a marginal role while $k_{det}$ shifts the surface in a larger range. It should
 be noted that detachment only happens at state A in our model. Thus
 the $k_{det}$ in our model is a different rate from most reported
-detachment rates which are first order averages. In addition, we notice
-that increasing $\delta_{4}$ only decrease compensation force when
-reattachment is fast. However, when reattachment is slow, front motor
-detachment tends to slow down the system since the system more often
-operates with only one engaged motor. (want a regime where asymmetric
-detachment helps only when katt is large enough (katt=200,kdet=40
-both needs be large)!!
+detachment rates which are first order averages. 
 
-Moreover our framework easily generates stationary distribution of
+Moreover, our framework easily generates stationary distribution of
 motor configurations (proportion of time the system stays in each
-configuration). In Fig \ref{fig:stationary-distribution}, we see
+configuration). In Figure \ref{fig:stationary-distribution}, we see
 that the distribution is symmetric and centered at zero when two motors
 are identical. The symmetry is not a surprise since two motors are
 identical. Furthermore, We test the case of a group of two motors
@@ -317,10 +306,10 @@ that kinesin1 tends to be ahead of kinesin2. In both cases, variance
 of the stationary distribution decreases with loading force. 
 
 By adding zero-attached-motor state as a absorbing state, we can calculate
-the expected run length. In Fig\label{By-adding-zero-attached-motor},
+the expected run length. In Figure \ref{fig:force-run-length},
 we notice the force-run length curves are not symmetric, which is
 likely due to asymmetric force-velocity response to assisting/hindering
-force. However run length decreases faster with assisting force. It
+force. However, run length decreases faster with assisting force. It
 is possibly due to the large variance of distribution of configuration
 under assisting force, i.e., the motor explore the configurations
 space more extensive increasing the exposure to more vulnerable situations
@@ -330,13 +319,13 @@ very sensitive to change in $k_{det}$.
 
 \begin{figure}
 \centerline{\includegraphics[scale=0.5]{figures/abc/1-2-w-wo-detach/FV-kab500}}
-\caption{\label{fig:FV 1-2-motor}force-velocity curves of a single motor,
-2-motor complex with and without detachment}
+\caption{\label{fig:FV 1-2-motor}force-velocity curves of a single motor, 2-motor complex with and without detachment (deprecated? )}
 \end{figure}
 
 \begin{figure}
-\centerline{\includegraphics[scale=0.55]{\string"figures/abc/500vs5000 new/new/500vs5000\string".pdf}}
-
+\includegraphics[width=.5\textwidth]{figures/abc/500vs5000newest/force-vel}
+\includegraphics[width=.5\textwidth]{figures/abc/500vs5000newest/force-dif}
+\centerline{\includegraphics[width=.5\textwidth]{figures/abc/500vs5000newest/force-coefvar}}
 \caption{\label{fig:M2}force-velocity, force-diffusivity and force-coefficient
 of variation curves of single motor and 2-motor complex in two parameter
 sets. Note that second moment of the single motor has effects on the
@@ -344,18 +333,18 @@ first moment of 2-motor complex.}
 
 \end{figure}
 \begin{figure}
-\includegraphics[scale=0.5]{\string"figures/abc/fcomp vs katt and delta/fcomp vs katt and delta\string"}\includegraphics[scale=0.5]{\string"figures/abc/fcomp vs katt and delta, kdet5/fcomp vs katt and delta\string"}
-
-
-
-\caption{\label{fig:fcomp surf}surface plot of compensation force vs $k_{att}$
-and $\delta_{4}$}
-
+\noindent
+\includegraphics[width=.5\textwidth]{figures/abc/fcomp-katt-delta/delta-5}
+\includegraphics[width=.5\textwidth]{figures/abc/fcomp-katt-delta/delta-20} 
+\caption{\label{fig:fcomp surf} surface plot of compensation force vs $k_{att}$ and $\delta_{4}$. Left: $k_{det}=5$. Right: $k_{det}=20$}
 \end{figure}
-\begin{figure}
-\includegraphics[scale=0.5]{\string"figures/abc/xs std bar plot/xs std bar plot\string".pdf}\includegraphics[scale=0.5]{\string"figures/abc/kin1-kin2/stdistr xs\string".pdf}
 
-\includegraphics[scale=0.5]{figures/abc/kin1-kin2/FV}\includegraphics[scale=0.5]{figures/abc/kin1-kin2/FD}
+\begin{figure}
+\includegraphics[width=.5\textwidth]{figures/abc/twokins/kin1-kin1/kin1-kin1-barplot}
+\includegraphics[width=.5\textwidth]{figures/abc/twokins/kin1-kin2/kin1-kin2-barplot}
+
+\includegraphics[width=.5\textwidth]{figures/abc/twokins/kin1-kin2/kin1-kin2-force-vel}
+\includegraphics[width=.5\textwidth]{figures/abc/twokins/kin1-kin2/kin1-kin2-force-dif}
 
 \caption{\label{fig:stationary-distribution}Top: stationary distribution of
 relative configurations of a kin1-kin1 (left) and kin1-kin2 (right)
@@ -364,50 +353,51 @@ curves }
 
 \end{figure}
 \begin{figure}
-\includegraphics[scale=0.5]{\string"figures/abc/run length/FER\string".pdf}
-
+\centering
+\includegraphics[scale=0.5]{figures/abc/ER/ER}
 \caption{\label{fig:force-run-length}force-run length curves at $d_{det}=30,50,70$}
 
 \end{figure}
 \begin{table}
-\begin{tabular}{|c|c|c|}
+\begin{tabularx}{\textwidth}{|X|p{.3\textwidth}|X|X|X|}
 \hline 
-parameter & description & value\tabularnewline
+parameter name & descriptions & generic kinesin & kinesin-1 &kinesin-2 \tabularnewline
 \hline 
 \hline 
-$k_{ab}$ & transition rate from $A$ to $B$ & 500/5000\tabularnewline
+$k_{ab}$ & transition rate from $A$ to $B$ & 500 or 5000 & 3000 & 3000 \tabularnewline
 \hline 
-$k_{ba}$ & transition rate from $B$ to $A$ & $0.2k_{ba}$\tabularnewline
+$k_{ba}$ & transition rate from $B$ to $A$ & $0.2k_{ba}$ & 600 & 600 \tabularnewline
 \hline 
-$k_{bc0}$ & transition rate from $B$ to $C$ under zero force & 1000\tabularnewline
+$k_{bc0}$ & transition rate from $B$ to $C$ under zero force & 1000 &2753 &1469 \tabularnewline
 \hline 
-$k_{ca}$ & transition rate from $C$ to $A$ & $k_{ab}/(0.0077k_{ab}-1)$\tabularnewline
+$k_{ca}$ & transition rate from $C$ to $A$ & $\frac{k_{ab}}{0.0077k_{ab}-1}$  & 99.0 & 66.8\tabularnewline
 \hline 
-$k_{det}$ & transition rate from $B$ to $E$ under zero force (detachment rate) & 5\tabularnewline
+$k_{det}$ & transition rate from $B$ to $E$ under zero force (detachment rate) & 5 & 1 & 1\tabularnewline
 \hline 
-$k_{att}$ & transition rate from $E$ to $A$ (attachment rate) & 50\tabularnewline
+$k_{att}$ & transition rate from $E$ to $A$ (attachment rate) & 50 & 50 & 50\tabularnewline
 \hline 
-$\delta$ & characteristic distance for $k_{bc}$ & 1\tabularnewline
+$\delta_{1}$ & characteristic distance for $k_{bc}$ under hindering/assisting force& 1.0 & 1.0 & 1.0 \tabularnewline
 \hline 
-$\delta_{3},\delta_{4}$ & characteristic distance for detachment under hindering/assisting load & 0.3\tabularnewline
+$\delta_{3},\delta_{4}$ & characteristic distance for detachment under hindering/assisting load & 0.3, 1.0 & 0.3, 1.0 & 0.3, 1.0\tabularnewline
 \hline 
-\end{tabular}
-
+\end{tabularx}
 \caption{\label{tab:parameters}parameters values. }
 \end{table}
+
+
 
 \subsection{cyclic 4-state model}
 
 We use the quasi-stationary approximation in our semi-Markov approach
 to study a group of 5 motors. Here what we did is a proof of concept
-since biological evidence that supports quasi stationary requirements
+since biological evidence that supports quasi-stationary requirements
 is yet to be identified. Nevertheless, transitions $A\to F$, $A\to E$,
 $F\to A$ and $F\to E$ are assumed to be force-dependent. We adopted
 parameters and adapted a revised Bell's law so that the these transition
 rates are at least one magnitude smaller than others to ensure validity
-of quasi-stationary approximation. In Fig \ref{fig:qss-FVFD}, force-velocity
+of quasi-stationary approximation. In Figure \ref{fig:qss-FVFD}, force-velocity
 and force-diffusivity curves of the 5-motor group generated by qss1
-and qss2 are shown with a comparison to MC simulation. We see that
+and qss2 are shown with a comparison to Monte Carlo simulation. We see that
 in general qss approximation tends to overestimate velocity. But nevertheless
 captured the general trend. The mismatch tend to be smaller for big
 loading force which is not a surprise since it reduces the detachment
@@ -415,10 +405,10 @@ rate making the motor more quasi-stationary. With some more effort,
 qss2 achieves better approximation than qss1. 
 
 \begin{figure}
-\includegraphics[scale=0.5]{figures/abcf/FVFD/FV}\includegraphics[scale=0.5]{figures/abcf/FVFD/FD}
+\includegraphics[width=.5\textwidth]{figures/abcf/FVFD/FV}\includegraphics[width=.5\textwidth]{figures/abcf/FVFD/FD}
 
 \caption{\label{fig:qss-FVFD}semi-Markov with quasi-stationary approximation
-(qss) compared to Monte Carlo (MC) simulation}
+(qss) compared to Monte Carlo (MC) simulation.}
 
 \end{figure}
 
@@ -435,7 +425,7 @@ Carlo simulations without loss of underlying details of the kinetic
 model. It should be noted that second moment results are usually computational
 expensive using Monte Carlo simulations due to its slow convergence
 with respect sample size. But it is an very important quantity to
-study and plays an important role in pattern formation\cite{Brooks2016}. 
+study and plays an important role in pattern formation  \cite{Brooks2016}. 
 
 Moreover, our approach makes extensive parameter sensitivity analysis
 feasible, as we demonstrated with two examples of applications. In
@@ -447,7 +437,7 @@ decreases diffusivity. Furthermore, we illustrate an example that
 second-moment characteristics at single-motor level impacts the first
 moment behavior in the group level: two parameter sets that have same
 single-motor force-velocity response but differ in force-diffusivity
-predict salient different force-velocity response of the group. We
+predict different force-velocity response of the group. We
 hope that this finding will call more attention on second moments
 in single molecule experiments. 
 
@@ -473,11 +463,11 @@ n^{1/2}\bigg(\frac{1}{n}\sum_{i=1}^{n}\begin{pmatrix}Z_{i}\\
 T
 \end{pmatrix},
 \end{eqnarray*}
-where the right hand side is a multivariate normal with covariance
+where the right hand side is a multivariate normal with mean $\mu_Z, \mu_{\tau}$ and  covariance
 matrix 
 \[
 \Sigma=\begin{pmatrix}\sigma_{Z}^{2} & \sigma_{Z\tau}\\
-\sigma_{\tau Z} & \sigma_{\tau}^{2}
+\sigma_{Z\tau} & \sigma_{\tau}^{2}
 \end{pmatrix}.
 \]
 Based on assumption1, $S_{i}$ has a unique stationary distribution
@@ -508,28 +498,28 @@ term is as follows
 \begin{eqnarray*}
 cov(E[Z_{i}\vert S_{i-1},S_{i}],E[Z_{i+k}\vert S_{i-1},S_{i}]) & = & \boldsymbol{1}'  \Pi (R_Z \circ P) P^{k-1} (R_Z \circ P) \boldsymbol{1},
 \end{eqnarray*}
-where $\boldsymbol{1}$ is a vector of all one's, $\Pi=\text{diag}(\boldsymbol{\pi}_S)$ is a diagonal matrix with diagonal $\boldsymbol{\pi}_S$, $P$ is the transition matrix of the chain $\{S_{i}\}$, $\circ$ denotes Hadamard product and $R_Z$ is a matrix with its component as 
+where $\boldsymbol{1}$ is a vector of all one's, $\Pi=\text{diag}(\boldsymbol{\pi}_S)$ is a diagonal matrix with diagonal $\boldsymbol{\pi}_S$, $P$ is the transition matrix of the chain $\{S_{i}\}$, $\circ$ denotes Hadamard product, and $R_Z$ is a matrix with its component as 
 \begin{eqnarray*}
 (R_Z)_{\alpha \beta} & = & (\Xi_Z)_{\alpha \beta} - \sum_{\alpha.\beta} (\Xi_Z)_{\alpha \beta} p(S_i=\beta \vert S_{i-1}=\alpha) p(S_{i-1}=\alpha),
 \end{eqnarray*}
 
 Let $M$ is a $m\times m$ matrix with all entries being $1/m$. We note that
 \begin{equation}
-\boldsymbol{1}'  \Pi (R \circ P) P^{k-1} (R \circ P) \boldsymbol{1} = \boldsymbol{1}'  \Pi (R \circ P) (P-M)^{k-1} (R \circ P) \boldsymbol{1},
+\boldsymbol{1}'  \Pi (R_Z \circ P) P^{k-1} (R_Z \circ P) \boldsymbol{1} = \boldsymbol{1}'  \Pi (R_Z \circ P) (P-M)^{k-1} (R_Z \circ P) \boldsymbol{1},
 \label{eq:(P-M)^k}
 \end{equation}
-which is deduced from the fact that $PM=M$ and $\boldsymbol{1}'\Pi (R \circ P) \boldsymbol{1}=0$. We further note that the
+which is deduced from the fact that $PM=M$ and $\boldsymbol{1}'\Pi (R_Z \circ P) \boldsymbol{1}=0$. We further note that the
 spectral radius $\rho(P-M)<1$ (aperiodicity) so that $\sum_{k=0}^{\infty}(P-M)^{k}=(I-P+M)^{-1}$.
 Hence 
 \begin{eqnarray*}
-\sum_{k=0}^{\infty}cov(Z_{i},Z_{i+k}) & = & \boldsymbol{1}'  \Pi (R \circ P) (I-P+M)^{-1} (R \circ P) \boldsymbol{1}.
+\sum_{k=0}^{\infty}cov(Z_{i},Z_{i+k}) & = & \boldsymbol{1}'  \Pi (R_Z \circ P) (I-P+M)^{-1} (R_Z \circ P) \boldsymbol{1}.
 \end{eqnarray*}
 
 Putting things together, we have found 
 \[
-\Sigma_{11}=2 [ \boldsymbol{1}'  \Pi (R \circ P) (I-P+M)^{-1} (R \circ P) \boldsymbol{1} ] + \boldsymbol{\pi}'\boldsymbol{\eta}{}_{ZZ\vert S} - \mu_{Z}^{2}.
+\Sigma_{11}=2 [ \boldsymbol{1}'  \Pi (R_Z \circ P) (I-P+M)^{-1} (R_Z \circ P) \boldsymbol{1} ] + \boldsymbol{\pi}'\boldsymbol{\eta}{}_{ZZ\vert S} - \mu_{Z}^{2}.
 \]
- $\Sigma_{22}$ has the same expression for $\tau$. To find $\Sigma_{12}$,
+ $\Sigma_{22}$ has the same expression by replacing $Z$ with $\tau$. To find $\Sigma_{12}$,
 we note that 
 \[
 \Sigma_{12}=cov(Z_{i},\tau_{i})+\sum_{k=1}^{\infty}cov(Z_{i},\tau_{i+k})+\sum_{k=1}^{\infty}cov(Z_{i+k},\tau_{k}).
