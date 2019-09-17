@@ -58,10 +58,9 @@ needs to be the set of all possible group states and nor does the transition
 of $S_{i-1}\to S_{i}$ to exactly follow every change in the group
 state due to the individual motors' kinetic transitions. Being aware
 of this sometimes would help simplify calculation as we will see later. 
-{\bf JF: I think you need to explain the dependency between the S, Z, and tau in words--specifically that they form a three dimensional Markov chain--where Z, tau at the current time depend only on S at the previous time.}
 
 \begin{figure}
-\centerline{\includegraphics[scale=0.3]{figures/diagram.png}}
+\centerline{\includegraphics[scale=1]{diagram.pdf}}
 \caption{\label{fig:diagram}Transition graph}
 \end{figure}
 
@@ -88,7 +87,7 @@ for which we impose the following assumptions:
 \begin{enumerate}
 \item $S_{i}$ is a aperiodic discrete Markov chain and has a stationary distribution on a finite state space.
 \item the first two moments of $Z_i \vert S_{i-1}$, $\tau_i \vert S_{i-1}$ and the first moment of $Z_{i}\vert S_{i},S_{i-1}$ and $\tau_{i}\vert S_{i},S_{i-1}$ are finite and can be computed.
-\item the dependence between variables are indicated by the graph in Figure \ref{fig:diagram}, particularly we need the Markov property $P(Z_i,\tau_i | \{ S_j \}_{j\le i} )=P(Z_i,\tau_i | S_{i-1}, S_i )$ and conditional independence $P(Z_i,Z_{i+1} | S_i) = P(Z_i | S_i) P(Z_{i+1} | S_i)$ and similarly for $\tau_i$.
+\item the dependence between variables are indicated by the graph in Figure \ref{fig:diagram}, particularly we need the Markov property $P(Z_i,\tau_i | \{ S_j \}_{j\le i} )=P(Z_i,\tau_i | S_{i-1}, S_i )$ and conditional independence $P(Z_i,Z_{j} | S_i) = P(Z_i | S_i) P(Z_{j} | S_i)$ for $j>i$ and similarly for $\tau_i$.
 \end{enumerate}
 Scaling time with a factor $n$ and length by $\sqrt{n},$ we have by functional
 CLT 
