@@ -173,7 +173,7 @@ state space be finite. We note that unrealistic far separation is
 rare and hence including them would only make negligible differences
 in our results. Therefore, we gradually increase the number of possible
 configurations from close to far until changes in the calculated asymptotic
-results are tiny. In this way, $S_{i}$ has a finite state space and
+results are small. In this way, $S_{i}$ has a finite state space and
 its transition matrix can be formed. Moreover it is irreducible and
 hence it has a unique stationary distribution. Aperiodicity is easily
 seen by tracking the number steps back to certain state. For example, looking at state A, it can take a 2-step loop (A to B back to A) or a 3-step loop (A to B to C to A). The greatest common divisor of 2 and 3 is 1 and hence by definition the chain is aperiodic. 
@@ -181,7 +181,7 @@ seen by tracking the number steps back to certain state. For example, looking at
 Assumption 2 is by our modeling setup and readily verified. First we note that $\tau_{i}\vert S_{i},S_{i-1}=\tau_{i}\vert S_{i-1}\sim Exp(\text{\ensuremath{\lambda}})$
 where rate $\lambda$ is the sum of rates of all transitions out of
 $S_{i}$. Also, $Z_{i}\vert {S_i,S_{i-1}}$
-is 0 if $S_{i-1} \to S_{i}$ does not involve any motor stepping  and $1/m$ otherwise, where $m$ is the number of motors in the group. 
+is 0 if $S_{i-1} \to S_{i}$ does not involve any motor stepping  and $1/m$ otherwise, where $m$ is the number of motors in the group. \emph{Are we not allowing the multiple chemical steps?  Why not wait until a physical step happens?}
 
 \subsubsection{A More Complex Model with Quasi-stationary Approximation}
 
@@ -229,7 +229,7 @@ method can easily handle up to five motors . We call this approximation
 
 \section{Modeling Experiments}
 
-In this section, we conduct in silicon experiments to study various
+In this section, we conduct \emph{in silica} experiments to study various
 behaviors of the two models we introduced previously. This extensive
 study is made possible thanks to the flexibility and efficiency of
 the semi-Markov approach. 
@@ -267,7 +267,7 @@ It is likely due to the fact that 2-motor system tend to have more
 frequent detachment under large force. Since detachment plays an important
 role, we consider the model with detachment henceforth. \fi
 
-Second moment is less often studied in experimental studies. In Figure \ref{fig:M2},
+Second moment is less often studied in experimental studies.\emph{JF: Why?} In Figure \ref{fig:M2},
 we show an example in which difference in second moment of the single
 motor behavior can give arise salient differences in the first moment
 of the group behavior. Since the kinetic model is simple, we can come up with two parameter sets that have same first moment (force-velocity curve) of 1-motor system. The parameter values are summarized in Table \ref{tab:parameters} under the name "generic kinesin".  As we can see for 2-motor system, the first parameter set($k_{ab}=500$) differs from 
