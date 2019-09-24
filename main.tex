@@ -28,7 +28,7 @@ single kinesin motor, including detachment and reattachment events, to study the
 
 \section{Introduction}
 
-Intracellular transport is vital for the proper functioning of a biological cell [Howard]. Passive diffusion is inadequate for long-distance transport of large cellular cargo, such as vesicles and organelles. Eukaryotic cells evolved an active transport system involving motor proteins which move on a track called microtubules (MTs) towing cargo to needed locations. Kinesin is one such motor protein. A kinesin has two motor domains, typically called heads, which can bind both ATP and the MT \cite{Muthukrishnan2009, Hancock}. By utilizing the energy from ATP hydrolysis, a kinesin ``walks'' on the MT towards the plus end using its two heads in a hand-over-hand fashion, undergoing a sequence of tightly coupled mechano-chemical transitions. Many studies have been conducted on single motors and given us a good understanding of its function in isolation \cite{Block2007,Visscher1999}. The sequence of mechano-chemical transitions are described by kinetic models and are often formulated as a continuous-time Markov chain \cite{Clancy2011}. It is known that at least some of the transition rates are force dependent \cite{Visscher1999}. In addition to Markov chain models, models that explicitly takes into account the microscopic diffusion of motor heads have also been proposed \cite{Kutys2010,Knoops2018}.  
+Intracellular transport is vital for the proper functioning of a biological cell \cite{howard2001mechanics}. Passive diffusion is inadequate for long-distance transport of large cellular cargo, such as vesicles and organelles. Eukaryotic cells evolved an active transport system involving motor proteins which move on a track called microtubules (MTs) towing cargo to needed locations. Kinesin is one such motor protein. A kinesin has two motor domains, typically called heads, which can bind both ATP and the MT \cite{Muthukrishnan2009, Hancock}. By utilizing the energy from ATP hydrolysis, a kinesin ``walks'' on the MT towards the plus end using its two heads in a hand-over-hand fashion, undergoing a sequence of tightly coupled mechano-chemical transitions. Many studies have been conducted on single motors and given us a good understanding of its function in isolation \cite{Block2007,Visscher1999}. The sequence of mechano-chemical transitions are described by kinetic models and are often formulated as a continuous-time Markov chain \cite{Clancy2011}. It is known that at least some of the transition rates are force dependent \cite{Visscher1999}. In addition to Markov chain models, models that explicitly takes into account the microscopic diffusion of motor heads have also been proposed \cite{Kutys2010,Knoops2018}.  
 
 In cellular environments, molecular motors work in a group to transport cargo \cite{Vershinin2007}. Motors are linked to a common cargo through their tail domains, forming a motor-cargo complex. When motors in the group drift apart, tension builds up between them; this tension is resolved through either detachment-reattachment or force-induced changes in the stepping rates of individual motors. In this sense, their motion is coupled together through the cargo, keeping the complex together. When opposing motors are attached to a single cargo, intriguing bidirectional movements may be observed which have triggered substantial interest in studying transport of multiple coupled motors \cite{Hancock2014, Welte2004, Muller2008b, Miles2017a}. Although there have been many experimental and theoretical studies, how our understanding of a single motor can inform their behaviors in a motor-cargo complex remains unclear. 
 
@@ -48,14 +48,14 @@ the motor transitions through biochemical states. Note that every time
 a motor changes its kinetic state, the group state changes while the
 relative position only changes if the motor makes a transition which
 results in a physical step. Let $\tau_{i}$ be the time for the transition
-of $S_{i-1}\to S_{i}$ to happen and $Z_{i}$ be the change in the
+of $S_{i}\to S_{i+1}$ to happen and $Z_{i}$ be the change in the
 group position (arithmetic average of positions of all motors) resulting
-from this transition (Figure \ref{fig:diagram}). If we assume the transition from $S_{i-1}\to S_{i}$ follows
+from this transition (Figure \ref{fig:diagram}). If we assume the transition from $S_{i}\to S_{i+1}$ follows
 every change in the group state due to a transition in the underlying
 kinetic states of individual motors, then $\tau_{i}$ is an exponential
 random variable. {\bf JF: I don't quite understand the following two sentences.}  In general, neither the state space of $\{S_{i}\}$
 needs to be the set of all possible group states and nor does the transition
-of $S_{i-1}\to S_{i}$ to exactly follow every change in the group
+of $S_{i}\to S_{i+1}$ to exactly follow every change in the group
 state due to the individual motors' kinetic transitions. Being aware
 of this sometimes would help simplify calculation as we will see later. 
 
@@ -108,7 +108,7 @@ where $\mu_{Z},\mu_{\tau},\sigma_{Z}^{2},\sigma_{\tau}^{2}$ and $\sigma_{Z\tau}^
 application of a functional CLT in obtaining asymptotic quantities in studying
 molecular motors dated back to \cite{Hughes2011,Krishnan2011} and semi-Markov
 processes were introduced in \cite{Hughes2012} to study variable
-step sizes.{\bf JF: Also, maybe look for other people's similar approaches to multiple motors.} Here we extend this method to a group of motors.
+step sizes.{\bf JF: Also, maybe look for other people's similar approaches to multiple motors. LF: tried keywords: motor CLT. but didn't find any} Here we extend this method to a group of motors.
 
 \subsection{Two Examples}
 
@@ -132,7 +132,7 @@ motor is $k_{i}x_{i}.$ In this modeling framework, the state $S_{i}$
 consisting of 
 \begin{itemize}
 \item relative positions of $m$ motors (Here we take it exactly as $\{x_{i}\}_{i\in1...m}$
-though some slack regime possibly exists, where the displacement between the motor and the cargo does not induce the displacement of the connecting spring. {\bf JF: what does slack regime mean. LH: is this explanation ok?} ) 
+though some slack regime possibly exists, where the displacement between the motor and the cargo does not induce any force from the connecting spring. {\bf JF: what does slack regime mean. LH: is this explanation ok?} ) 
 \item their kinetic states (including detachment as a state). 
 \end{itemize}
 Moreover, in the kinetic model we wish to adopt, at least one of the
@@ -176,17 +176,17 @@ configurations from close to far until changes in the calculated asymptotic
 results are small. In this way, $S_{i}$ has a finite state space and
 its transition matrix can be formed. Moreover it is irreducible and
 hence it has a unique stationary distribution. Aperiodicity is easily
-seen by tracking the number steps back to certain state. For example, looking at state A, it can take a 2-step loop (A to B back to A) or a 3-step loop (A to B to C to A). The greatest common divisor of 2 and 3 is 1 and hence by definition the chain is aperiodic. 
+seen by tracking the number steps back to certain state. For example, looking at state A, it can take a 2-step loop (A to B back to A) or a 3-step loop (A to B to E to A). The greatest common divisor of 2 and 3 is 1 and hence by definition the chain is aperiodic. 
 
-Assumption 2 is by our modeling setup and readily verified. First we note that $\tau_{i}\vert S_{i},S_{i-1}=\tau_{i}\vert S_{i-1}\sim Exp(\text{\ensuremath{\lambda}})$
+Assumption 2 is by our modeling setup and readily verified. First we note that $\tau_{i}\vert S_{i},S_{i+1}=\tau_{i}\vert S_{i+1}\sim Exp(\text{\ensuremath{\lambda}})$
 where rate $\lambda$ is the sum of rates of all transitions out of
-$S_{i}$. Also, $Z_{i}\vert {S_i,S_{i-1}}$
-is 0 if $S_{i-1} \to S_{i}$ does not involve any motor stepping  and $1/m$ otherwise, where $m$ is the number of motors in the group. \emph{Are we not allowing the multiple chemical steps?  Why not wait until a physical step happens?}
+$S_{i}$. Also, $Z_{i}\vert {S_i,S_{i+1}}$
+is 0 if $S_{i} \to S_{i+1}$ does not involve any motor stepping  and $1/m$ otherwise, where $m$ is the number of motors in the group. \emph{Are we not allowing the multiple chemical steps?  Why not wait until a physical step happens? LF: We can as how it is done in the next example. Here, I didn't allow multiple chemical steps at the time when the strong assumptions for the covariance calculation was not relaxed. Now it is not necessary to be handled like this}
 
 \subsubsection{A More Complex Model with Quasi-stationary Approximation}
 
 One drawback of the previous set-up is that the number of states
-grows factorially with number of motors. In experimental studies such as the DNA origami experiments described in the introduction,
+grows factorially (exponentially) with number of motors. In experimental studies such as the DNA origami experiments described in the introduction,
 only a few motors are involved. So it is less a concern when modeling
 those situations. Moreover we can make a quasi-stationary approximation
 to further mitigate the issue. In this case, consider a 4-state kinetic
@@ -217,7 +217,7 @@ The number of kinetic states of a $m-$motor system is $2m$, (e.g.
 for two motors we have $AS,FS,SA,SF$ where $S$ represents ``stationary
 state''. We call this approximation ``qss2''. It drastically reduces
 the state space. In this
-way, $Z_{j}|(S_{j-1},S_{j})$ is deterministic and distribution $p(\tau_{j}|(S_{j-1},S_{j}))$
+way, $Z_{j}|(S_{j},S_{j+1})$ is deterministic and distribution $p(\tau_{j}|(S_{j},S_{j+1}))$
 is not exponential anymore but it can be found using the matrix computational
 method in \cite{Hughes2011}. Moreover, the state space can be further
 reduced if all motors are identical. Taking one step further, if we
@@ -267,7 +267,7 @@ It is likely due to the fact that 2-motor system tend to have more
 frequent detachment under large force. Since detachment plays an important
 role, we consider the model with detachment henceforth. \fi
 
-Second moment is less often studied in experimental studies.\emph{JF: Why?} In Figure \ref{fig:M2},
+Second moment is less often studied in experimental studies, probably because it is expensive to replicate the same experiment many times.\emph{JF: Why? LF: is this explanation ok? } In Figure \ref{fig:M2},
 we show an example in which difference in second moment of the single
 motor behavior can give arise salient differences in the first moment
 of the group behavior. Since the kinetic model is simple, we can come up with two parameter sets that have same first moment (force-velocity curve) of 1-motor system. The parameter values are summarized in Table \ref{tab:parameters} under the name "generic kinesin".  As we can see for 2-motor system, the first parameter set($k_{ab}=500$) differs from 
