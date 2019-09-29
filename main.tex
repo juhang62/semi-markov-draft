@@ -53,7 +53,7 @@ group position (arithmetic average of positions of all motors) resulting
 from this transition (Figure \ref{fig:diagram}). If we assume the transition from $S_{i}\to S_{i+1}$ follows
 every change in the group state due to a transition in the underlying
 kinetic states of individual motors, then $\tau_{i}$ is an exponential
-random variable. {\bf JF: I don't quite understand the following two sentences.}  In general, neither the state space of $\{S_{i}\}$
+random variable. In general, neither the state space of $\{S_{i}\}$
 needs to be the set of all possible group states and nor does the transition
 of $S_{i}\to S_{i+1}$ to exactly follow every change in the group
 state due to the individual motors' kinetic transitions. Being aware
@@ -86,8 +86,8 @@ S_{i}
 for which we impose the following assumptions:
 \begin{enumerate}
 \item $S_{i}$ is an aperiodic discrete Markov chain and has a stationary distribution on a finite state space.
-\item the first two moments of $Z_i \vert S_{i-1}$, $\tau_i \vert S_{i-1}$ and the first moment of $Z_{i}\vert S_{i},S_{i-1}$ and $\tau_{i}\vert S_{i},S_{i-1}$ are finite and can be computed.
-\item the dependence between variables are indicated by the graph in Figure \ref{fig:diagram}, particularly we need the Markov property $P(Z_i,\tau_i | \{ S_j \}_{j\le i} )=P(Z_i,\tau_i | S_{i-1}, S_i )$ and conditional independence $P(Z_i,Z_{j} | S_i) = P(Z_i | S_i) P(Z_{j} | S_i)$ for $j>i$ and similarly for $\tau_i$.
+\item the first two moments of $Z_i$ and $\tau_i$ given $S_{i}$ and $S_{i+1}$, as well as the first moment of $Z_{i}$ and $\tau_i$ given $S_{i}$ and $S_{i+1}$, are finite and can be computed.
+\item the dependence between variables are indicated by the graph in Figure \ref{fig:diagram}, particularly we need the Markov property $p(Z_i=z,\tau_i=t | \{ S_j \}_{j\le i} )=p(Z_i=z,\tau_i=t | S_{i})$ and conditional independence $p(Z_i=z,Z_{j}=r | S_i) = p(Z_i=z | S_i) p(Z_{j}=r | S_i)$ for $j>i$ and similarly for $\tau_i$.
 \end{enumerate}
 Scaling time with a factor $n$ and length by $\sqrt{n},$ we have by functional
 CLT 
@@ -108,10 +108,9 @@ where $\mu_{Z},\mu_{\tau},\sigma_{Z}^{2},\sigma_{\tau}^{2}$ and $\sigma_{Z\tau}^
 application of a functional CLT in obtaining asymptotic quantities in studying
 molecular motors dated back to \cite{Hughes2011,Krishnan2011} and semi-Markov
 processes were introduced in \cite{Hughes2012} to study variable
-step sizes.{\bf JF: Also, maybe look for other people's similar approaches to multiple motors. LF: tried keywords: motor CLT. but didn't find any} Here we extend this method to a group of motors.
+step sizes. Here we extend this method to a group of motors. Other approaches to study groups of motors include \cite{Miles2017a,Miles2018a}.
 
 \subsection{Two Examples}
-
 We illustrate the use of the semi-Markov approach by applying it to two
 kinetic models. First, we state the common modeling assumptions. Let
 $m$ be the number of motors linked by a linear spring with constant

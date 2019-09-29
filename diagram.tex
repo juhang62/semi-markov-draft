@@ -8,26 +8,26 @@
 
 \begin{document}
 
-\begin{tikzpicture}[node distance=2cm]
+\begin{tikzpicture}[node distance=3cm]
 \node (left_ellipse) []{$\cdots$};
 
 \node (Sm1) [var, right of=left_ellipse] {$S_{i-1}$};
-\node (Zm1) [var, above of=Sm1] {$Z_{i-1}$};
-\node (tm1) [var, below of=Sm1] {$\tau_{i-1}$};
+\node (Zm1) [var, above of=Sm1, xshift=1.5cm] {$Z_{i-1}$};
+\node (tm1) [var, above of=Zm1] {$\tau_{i-1}$};
 
 
 \node (S) [var, right of=Sm1] {$S_{i}$};
-\node (Z) [var, above of=S] {$Z_{i}$};
-\node (t) [var, below of=S] {$\tau_{i}$};
+\node (Z) [var, right of=Zm1] {$Z_{i}$};
+\node (t) [var, above of=Z] {$\tau_{i}$};
 
 \node (Sp1) [var, right of=S] {$S_{i+1}$};
-\node (Zp1) [var, above of=Sp1] {$Z_{i+1}$};
-\node (tp1) [var, below of=Sp1] {$\tau_{i+1}$};
+\node (Zp1) [var, right of=Z] {$Z_{i+1}$};
+\node (tp1) [var, above of=Zp1] {$\tau_{i+1}$};
 
 
 \node (Sp2) [var, right of=Sp1] {$S_{i+2}$};
-\node (Zp2) [var, above of=Sp2] {$Z_{i+2}$};
-\node (tp2) [var, below of=Sp2] {$\tau_{i+2}$};
+%\node (Zp2) [var, right of=Z] {$Z_{i+2}$};
+%\node (tp2) [var, below of=Sp2] {$\tau_{i+2}$};
 
 \node (right_ellipse) [right of=Sp2]{$\cdots$};
 
@@ -45,9 +45,9 @@
 \draw [arrow] (Sp1) -- (Sp2);
 \draw [arrow] (Sp1) -- (Z);
 \draw [arrow] (Sp1) -- (t);
-\draw [arrow] (Sp2) -- (Zp2);
-\draw [arrow] (Sp2) -- (tp2);
-\draw [arrow] (Sp2) -- (Zp2);
+%\draw [arrow] (Sp2) -- (Zp2);
+%\draw [arrow] (Sp2) -- (tp2);
+%\draw [arrow] (Sp2) -- (Zp2);
 \draw [arrow] (Sp2) -- (Zp1);
 \draw [arrow] (Sp2) -- (tp1);
 \draw [arrow] (Sp2) -- (right_ellipse);
