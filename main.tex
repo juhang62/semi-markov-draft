@@ -38,26 +38,18 @@ The paper is outlined as follows. We first describe the semi-Markov approach in 
 
 \section{Semi-Markov Framework for Molecular Motor Models}
 
-In this section, we review a previously established framework for molecular motor models that break each kinetic cycle into a time and a displacement \cite{Hughes2011,Hughes2012}, and then use central limit theory to establish asymptotic quantities typically measured in experiments.  The goal of this paper is to generalize the technique to motor-cargo complexes.
+In this section, we review a previously established framework for molecular motor models that summarizes each kinetic cycle as a time and a displacement \cite{Hughes2011,Hughes2012}, and then use a central limit theorem (CLT) to establish asymptotic quantities for position typically measured in experiments.  The goal of this paper is to generalize these technique to motor-cargo complexes.
 
-We consider a Markov chain $\{S_{i}\}_{i\in\mathbb{N}}$ where $S_{i}$
-represents the relative position and the kinetic state (together called the
-``group state'' henceforth) of each motor at ``time'' $i$. We
+In order to proceed, we will need to define a cycle somewhat abstractly and then fill in details with specific examples.  The central limit theorem for the position process involve sums of both the change in position of the motor-cargo complex during the $i$th cycle, which we will denote $Z_i$, as well as the time of the $i$th cycle, which we will denote $\tau_i$.  We will also need to carry some auxiliary information from one cycle to the next which we denote with $S_i$; one important aspect of the methods presented here is that $S_i$ will form a Markov chain irrespective of $Z_i$ and $\tau_i$.
+
+The Markov chain $\{S_{i}\}_{i\in\mathbb{N}}$ where $S_{i}$
+represents the relative position and the kinetic state (together called the ``group state'' henceforth) of each motor at ``time'' $i$. We
 adopt an underlying kinetic model for each motor which governs how
 the motor transitions through biochemical states. Note that every time
 a motor changes its kinetic state, the group state changes while the
 relative position only changes if the motor makes a transition which
-results in a physical step. Let $\tau_{i}$ be the time for the transition
-of $S_{i}\to S_{i+1}$ to happen and $Z_{i}$ be the change in the
-group position (arithmetic average of positions of all motors) resulting
-from this transition (Figure \ref{fig:diagram}). If we assume the transition from $S_{i}\to S_{i+1}$ follows
-every change in the group state due to a transition in the underlying
-kinetic states of individual motors, then $\tau_{i}$ is an exponential
-random variable. In general, neither the state space of $\{S_{i}\}$
-needs to be the set of all possible group states and nor does the transition
-of $S_{i}\to S_{i+1}$ to exactly follow every change in the group
-state due to the individual motors' kinetic transitions. Being aware
-of this sometimes would help simplify calculation as we will see later. 
+results in a physical step. \emph{JF: I don't think we want to set it up so that S is always the combined chemical state and relative position.  A better description is the chemical state and relative position of the system WHEN a physical transition occurs.Right? Or at least we say--that in each example we will make as the definition of a cycle either a chemical transition or a physical transition. } Let $\tau_{i}$ be the time for the transition of $S_{i}\to S_{i+1}$ to happen and $Z_{i}$ be the change in the group position defined as the arithmetic average of positions of all motors resulting
+from this transition (Figure \ref{fig:diagram}). If we assume the transition from $S_{i}\to S_{i+1}$ follows every change in the group state due to a transition in the underlying kinetic states of individual motors, then $\tau_{i}$ is an exponential random variable. In general, neither the state space of $\{S_{i}\}$ needs to be the set of all possible group states nor does the transition of $S_{i}\to S_{i+1}$ to exactly follow every change in the group state due to the individual motors' kinetic transitions. \emph{JF: this previous sentence contrdicts the first sentence of the paragraph.} Being aware of this sometimes would help simplify calculation as we will see later. 
 
 \begin{figure}
 \centerline{\includegraphics[scale=1]{diagram.pdf}}
@@ -65,18 +57,10 @@ of this sometimes would help simplify calculation as we will see later.
 \end{figure}
 
 
-Let $X(t)$ be the group position at time $t$. Using the variables
-defined above, we can write $X(t)=\sum_{i=1}^{N(t)}Z_{i}$ where $N(t)=\inf\{n\in\mathbb{N}:\sum_{i=1}^{n}\tau_{i}\ge t\}$.
-Two quantities commonly observed in experiments and studied theoretically
+Let $X(t)$ be the position of the motor-cargo complex at time $t$. Using the variables defined above, we can write $X(t)=\sum_{i=1}^{N(t)}Z_{i}$ where $N(t)=\inf\{n\in\mathbb{N}:\sum_{i=1}^{n}\tau_{i}\ge t\}$. Two quantities commonly observed in experiments and studied theoretically
 are asymptotic speed and diffusivity, i.e., $V=\lim_{t\to\infty}\frac{E[X(t)]}{t}$
-and $D=\lim_{t\to\infty}\frac{\text{Var}[X(t)]}{2t}$. Since experimental
-observations of motors occur at significantly long time and distance
-in contrast to microscopic motor dynamics, from a CLT (central limit theory) point of view,
-we are looking effectively at a Brownian motion. To make it precise,
-we want to cast a multiple-motor model into a framework of semi-Markov
-processes so that these two asymptotic quantities of interests can be
-easily calculated using a functional CLT. Towards this goal, we consider
-a discrete-time Markov chain 
+and $D=\lim_{t\to\infty}\frac{\text{Var}[X(t)]}{2t}$. Since many experimental observations of motors occur at significantly long time and distance in contrast to microscopic motor dynamics, from a CLT (central limit theory) point of view, the position process will appear essentially like a Brownian motion. To make it precise, we want to cast a multi-motor model into a framework of semi-Markov processes so that these two asymptotic quantities of interests can be easily calculated from a functional CLT. Towards this goal, we consider
+the discrete-time Markov chain 
 \[
 \begin{pmatrix}Z_{i}\\
 \tau_{i}\\
@@ -86,7 +70,7 @@ S_{i}
 for which we impose the following assumptions:
 \begin{enumerate}
 \item $S_{i}$ is an aperiodic discrete Markov chain and has a stationary distribution on a finite state space.
-\item the first two moments of $Z_i$ and $\tau_i$ given $S_{i}$ and $S_{i+1}$, as well as the first moment of $Z_{i}$ and $\tau_i$ given $S_{i}$ and $S_{i+1}$, are finite and can be computed.
+\item The first two moments of $(Z_i, \tau_i)'$ given $S_{i}$ and $S_{i+1}$, are finite and can be computed.
 \item the dependence between variables are indicated by the graph in Figure \ref{fig:diagram}, particularly we need the Markov property $p(Z_i=z,\tau_i=t | \{ S_j \}_{j\le i} )=p(Z_i=z,\tau_i=t | S_{i})$ and conditional independence $p(Z_i=z,Z_{j}=r | S_i) = p(Z_i=z | S_i) p(Z_{j}=r | S_i)$ for $j>i$ and similarly for $\tau_i$.
 \end{enumerate}
 Scaling time with a factor $n$ and length by $\sqrt{n},$ we have by functional
@@ -102,7 +86,7 @@ V=\lim_{t\to\infty}\frac{E[X(t)]}{t}=\frac{\mu_{z}}{\mu_{\tau}}\label{eq:V}
 \end{equation}
  and 
 \begin{equation}
-D=\lim_{t\to\infty}\frac{\text{Var}(X(t))}{2t}=\frac{1}{2}(\frac{\mu_{Z}^{2}\sigma_{\tau}^{2}}{\mu_{\tau}^{3}}+\frac{\sigma_{Z}^{2}}{\mu_{\tau}}-2\frac{\mu_{Z}\sigma_{Z\tau}}{\mu_{\tau}^{2}})\label{eq:D}
+D=\lim_{t\to\infty}\frac{\text{Var}(X(t))}{2t}=\frac{1}{2}\left(\frac{\mu_{Z}^{2}\sigma_{\tau}^{2}}{\mu_{\tau}^{3}}+\frac{\sigma_{Z}^{2}}{\mu_{\tau}}-2\frac{\mu_{Z}\sigma_{Z\tau}}{\mu_{\tau}^{2}}\right)\label{eq:D}
 \end{equation}
 where $\mu_{Z},\mu_{\tau},\sigma_{Z}^{2},\sigma_{\tau}^{2}$ and $\sigma_{Z\tau}^{2}$ are mean and variance means and (cov-)variance arising from the application of functional CLT (see appendix for detailed derivation). The
 application of a functional CLT in obtaining asymptotic quantities in studying
@@ -233,7 +217,7 @@ behaviors of the two models we introduced previously. This extensive
 study is made possible thanks to the flexibility and efficiency of
 the semi-Markov approach. 
 
-\subsection{standard 3-state model}
+\subsection{Standard 3-state Model}
 
 For this model, we consider a 2-motor system for simplicity. We adapt
 biological relevant parameters found in literature shown in table\ref{tab:parameters}.
@@ -266,7 +250,7 @@ It is likely due to the fact that 2-motor system tend to have more
 frequent detachment under large force. Since detachment plays an important
 role, we consider the model with detachment henceforth. \fi
 
-Second moment is less often studied in experimental studies, probably because it is expensive to replicate the same experiment many times.\emph{JF: Why? LF: is this explanation ok? } In Figure \ref{fig:M2},
+The second moment is less often studied in experimental studies, because it is expensive to replicate the same experiment many times and is often conflated with experimental error. In Figure \ref{fig:M2},
 we show an example in which difference in second moment of the single
 motor behavior can give arise salient differences in the first moment
 of the group behavior. Since the kinetic model is simple, we can come up with two parameter sets that have same first moment (force-velocity curve) of 1-motor system. The parameter values are summarized in Table \ref{tab:parameters} under the name "generic kinesin".  As we can see for 2-motor system, the first parameter set($k_{ab}=500$) differs from 
@@ -382,7 +366,7 @@ $\delta_{3},\delta_{4}$ & characteristic distance for detachment under hindering
 
 
 
-\subsection{cyclic 4-state model}
+\subsection{Cyclic 4-state Model}
 
 We use the quasi-stationary approximation in our semi-Markov approach
 to study a group of 5 motors. Here what we did is a proof of concept
