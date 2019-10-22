@@ -12,17 +12,17 @@
 \node (left_ellipse) []{$\cdots$};
 
 \node (Sm1) [var, right of=left_ellipse] {$S_{i-1}$};
-\node (Zm1) [var, above of=Sm1, xshift=1.5cm] {$Z_{i-1}$};
-\node (tm1) [var, above of=Zm1] {$\tau_{i-1}$};
+\node (Zm1) [var, above of=Sm1, xshift=1.5cm] {$Z_{i}$};
+\node (tm1) [var, above of=Zm1] {$\tau_{i}$};
 
 
 \node (S) [var, right of=Sm1] {$S_{i}$};
-\node (Z) [var, right of=Zm1] {$Z_{i}$};
-\node (t) [var, above of=Z] {$\tau_{i}$};
+\node (Z) [var, right of=Zm1] {$Z_{i+1}$};
+\node (t) [var, above of=Z] {$\tau_{i+1}$};
 
 \node (Sp1) [var, right of=S] {$S_{i+1}$};
-\node (Zp1) [var, right of=Z] {$Z_{i+1}$};
-\node (tp1) [var, above of=Zp1] {$\tau_{i+1}$};
+\node (Zp1) [var, right of=Z] {$Z_{i+2}$};
+\node (tp1) [var, above of=Zp1] {$\tau_{i+2}$};
 
 
 \node (Sp2) [var, right of=Sp1] {$S_{i+2}$};

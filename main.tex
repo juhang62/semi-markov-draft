@@ -43,12 +43,10 @@ In this section, we review a previously established framework for molecular moto
 In order to proceed, we will need to define a cycle somewhat abstractly and then fill in details with specific examples.  The central limit theorem for the position process involve sums of both the change in position of the motor-cargo complex during the $i$th cycle, which we will denote $Z_i$, as well as the time of the $i$th cycle, which we will denote $\tau_i$.  We will also need to carry some auxiliary information from one cycle to the next which we denote with $S_i$; one important aspect of the methods presented here is that $S_i$ will form a Markov chain irrespective of $Z_i$ and $\tau_i$.
 
 The Markov chain $\{S_{i}\}_{i\in\mathbb{N}}$ where $S_{i}$
-represents the relative position and the kinetic state (together called the ``group state'' henceforth) of each motor at ``time'' $i$. We
+represents the relative position and certain form of the kinetic state of each motor (together called the ``group state'' henceforth)  at ``time'' $i$. Note the how exactly the kinetic states are represented by $S_{i}$ should be decided carefully case by case as we will illustrate later by examples.   We
 adopt an underlying kinetic model for each motor which governs how
 the motor transitions through biochemical states. Note that every time
-a motor changes its kinetic state, the group state changes while the
-relative position only changes if the motor makes a transition which
-results in a physical step. \emph{JF: I don't think we want to set it up so that S is always the combined chemical state and relative position.  A better description is the chemical state and relative position of the system WHEN a physical transition occurs.Right? Or at least we say--that in each example we will make as the definition of a cycle either a chemical transition or a physical transition. } Let $\tau_{i}$ be the time for the transition of $S_{i}\to S_{i+1}$ to happen and $Z_{i}$ be the change in the group position defined as the arithmetic average of positions of all motors resulting
+a motor changes its kinetic state, the relative position only changes if this transition results in a physical step. \emph{JF: I don't think we want to set it up so that S is always the combined chemical state and relative position.  A better description is the chemical state and relative position of the system WHEN a physical transition occurs.Right? Or at least we say--that in each example we will make as the definition of a cycle either a chemical transition or a physical transition. LH: I have rewritten it. Let me if it is clear now} Let $\tau_{i}$ be the time for the transition of $S_{i-1}\to S_{i}$ to happen and $Z_{i}$ be the change in the group position defined as the arithmetic average of positions of all motors resulting
 from this transition (Figure \ref{fig:diagram}). If we assume the transition from $S_{i}\to S_{i+1}$ follows every change in the group state due to a transition in the underlying kinetic states of individual motors, then $\tau_{i}$ is an exponential random variable. In general, neither the state space of $\{S_{i}\}$ needs to be the set of all possible group states nor does the transition of $S_{i}\to S_{i+1}$ to exactly follow every change in the group state due to the individual motors' kinetic transitions. \emph{JF: this previous sentence contrdicts the first sentence of the paragraph.} Being aware of this sometimes would help simplify calculation as we will see later. 
 
 \begin{figure}
@@ -68,10 +66,10 @@ S_{i}
 \end{pmatrix}
 \]
 for which we impose the following assumptions:
-\begin{enumerate}
+\begin{enumerate} %roll back notation
 \item $S_{i}$ is an aperiodic discrete Markov chain and has a stationary distribution on a finite state space.
-\item The first two moments of $(Z_i, \tau_i)'$ given $S_{i}$ and $S_{i+1}$, are finite and can be computed.
-\item the dependence between variables are indicated by the graph in Figure \ref{fig:diagram}, particularly we need the Markov property $p(Z_i=z,\tau_i=t | \{ S_j \}_{j\le i} )=p(Z_i=z,\tau_i=t | S_{i})$ and conditional independence $p(Z_i=z,Z_{j}=r | S_i) = p(Z_i=z | S_i) p(Z_{j}=r | S_i)$ for $j>i$ and similarly for $\tau_i$.
+\item The first two moments of $(Z_i, \tau_i)'$ given $S_{i-1}$ and $S_{i}$, are finite and can be computed.
+\item the dependence between variables are indicated by the graph in Figure \ref{fig:diagram}, particularly we need the Markov property $p(Z_i=z,\tau_i=t | \{ S_j \}_{j\le i-1} )=p(Z_i=z,\tau_i=t | S_{i-1})$ and conditional independence $p(Z_i=z,Z_{j}=r | S_{i}) = p(Z_i=z | S_{i}) p(Z_{j}=r | S_i)$ for $j>i$ and similarly for $\tau_i$.
 \end{enumerate}
 Scaling time with a factor $n$ and length by $\sqrt{n},$ we have by functional
 CLT 
@@ -161,10 +159,10 @@ its transition matrix can be formed. Moreover it is irreducible and
 hence it has a unique stationary distribution. Aperiodicity is easily
 seen by tracking the number steps back to certain state. For example, looking at state A, it can take a 2-step loop (A to B back to A) or a 3-step loop (A to B to E to A). The greatest common divisor of 2 and 3 is 1 and hence by definition the chain is aperiodic. 
 
-Assumption 2 is by our modeling setup and readily verified. First we note that $\tau_{i}\vert S_{i},S_{i+1}=\tau_{i}\vert S_{i+1}\sim Exp(\text{\ensuremath{\lambda}})$
+Assumption 2 is by our modeling setup and readily verified. First we note that $\tau_{i}\vert S_{i-1},S_{i}=\tau_{i}\vert S_{i-1}\sim Exp(\text{\ensuremath{\lambda}})$
 where rate $\lambda$ is the sum of rates of all transitions out of
-$S_{i}$. Also, $Z_{i}\vert {S_i,S_{i+1}}$
-is 0 if $S_{i} \to S_{i+1}$ does not involve any motor stepping  and $1/m$ otherwise, where $m$ is the number of motors in the group. \emph{Are we not allowing the multiple chemical steps?  Why not wait until a physical step happens? LF: We can as how it is done in the next example. Here, I didn't allow multiple chemical steps at the time when the strong assumptions for the covariance calculation was not relaxed. Now it is not necessary to be handled like this}
+$S_{i}$. Also, $Z_{i}\vert {S_{i-1},S_{i}}$
+is 0 if $S_{i-1} \to S_{i}$ does not involve any motor stepping  and $1/m$ otherwise, where $m$ is the number of motors in the group. \emph{Are we not allowing the multiple chemical steps?  Why not wait until a physical step happens? LF: We can as how it is done in the next example. Here, I didn't allow multiple chemical steps at the time when the strong assumptions for the covariance calculation was not relaxed. Now it is not necessary to be handled like this}
 
 \subsubsection{A More Complex Model with Quasi-stationary Approximation}
 
@@ -200,7 +198,7 @@ The number of kinetic states of a $m-$motor system is $2m$, (e.g.
 for two motors we have $AS,FS,SA,SF$ where $S$ represents ``stationary
 state''. We call this approximation ``qss2''. It drastically reduces
 the state space. In this
-way, $Z_{j}|(S_{j},S_{j+1})$ is deterministic and distribution $p(\tau_{j}|(S_{j},S_{j+1}))$
+way, $Z_{j}|(S_{j-1},S_{j})$ is deterministic and distribution $p(\tau_{j}|(S_{j-1},S_{j}))$
 is not exponential anymore but it can be found using the matrix computational
 method in \cite{Hughes2011}. Moreover, the state space can be further
 reduced if all motors are identical. Taking one step further, if we
