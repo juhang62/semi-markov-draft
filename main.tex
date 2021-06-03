@@ -23,31 +23,31 @@
 \begin{abstract}
 We propose a general mathematical and computational approach to study cellular transport driven by a group
 of kinesin motors. Our approach can integrate kinetic models of a
-single kinesin motor, including detachment and reattachment events, to study the group behaviors of several motors. By formulating the problem as a semi-Markov process and applying a central limit theorem, asymptotic velocity and diffusivity can be readily calculated, rendering considerable computational advantage over Monte Carlo simulations in tasks such as parameter sensitivity analysis and model selection. We demonstrate the method with some examples and illustrate the importance of capturing the intrinsic microscopic-level dynamics of individual motors and how changes at the microscopic level propagate to the motor-cargo at a mesoscopic level. 
+single kinesin motor, including detachment and reattachment events, to study the group behaviors of several motors. By formulating the problem as a semi-Markov process and applying a central limit theorem, asymptotic velocity and diffusivity can be readily calculated, rendering considerable computational advantage over Monte Carlo simulations in tasks such as parameter sensitivity analysis and model selection. We demonstrate the method with some examples and illustrate the importance of capturing the intrinsic microscopic-level dynamics of individual motors and how changes at the microscopic level propagate to the motor-cargo complex at a mesoscopic level. 
 \end{abstract}
 
 \section{Introduction}
 
 Active intracellular transport is vital for the proper functioning of a biological cell \cite{howard2001mechanics}. Passive diffusion is inadequate for long-distance transport of large cellular cargo, such as vesicles and organelles. Eukaryotic cells evolved an active transport system involving motor proteins which move along a track called microtubules (MTs) towing assorted cargo to needed locations. Kinesin is one such motor protein. A kinesin has two motor domains, typically called heads, which can bind to the MT and both bind and hydrolyze ATP and  \cite{Muthukrishnan2009, Hancock}. By utilizing the energy from ATP hydrolysis, a kinesin ``walks'' on the MT towards the plus end using its two heads in a hand-over-hand fashion, undergoing a sequence of tightly coupled mechano-chemical transitions. Many studies have been conducted on single motors and given us a good understanding of its function in isolation \cite{Block2007,Visscher1999}. The sequence of mechano-chemical transitions are described by kinetic models and are often formulated as a continuous-time Markov chain \cite{Clancy2011}. It is known that at least some of the transition rates are force dependent \cite{Visscher1999}. In addition to Markov chain models, models that explicitly takes into account the microscopic diffusion of motor heads have also been proposed \cite{Kutys2010,Knoops2018}. 
 
-In cellular environments, molecular motors work in groups to transport cargo \cite{Vershinin2007}. Motors are linked to a common cargo through their tail domains, forming a motor-cargo complex. When motors in the group drift apart, tension builds up between them; this tension is resolved through either detachment-reattachment from-to the MT or force-induced changes in the stepping rates of individual motors. In this sense, their motion is coupled together through the cargo, keeping the complex together. When opposing motors are attached to a single cargo, intriguing bidirectional movements may be observed which have triggered substantial interest in studying transport of multiple coupled motors \cite{Hancock2014, Welte2004, Muller2008b, Miles2017a}. Although there have been many experimental and theoretical studies, it remains unclear how to incorporate our understanding of a single motor to inform the behavior of  motor-cargo complexes. 
+In cellular environments, molecular motors work in groups to transport cargo \cite{Vershinin2007}. Motors are linked to a common cargo through their tail domains, forming a motor-cargo complex. When motors in the group drift apart, tension builds up between them; this tension is resolved through either detachment-reattachment from-to (LF:?) the MT or force-induced changes in the stepping rates of individual motors. In this sense, their motion is coupled together through the cargo, keeping the complex together. When opposing motors are attached to a single cargo, intriguing bidirectional movements are sometimes observed which have triggered substantial interest in studying cellular transport by multiple coupled motors \cite{Hancock2014, Welte2004, Muller2008b, Miles2017a}. Although there have been many experimental and theoretical studies, it remains unclear how to incorporate our understanding of a single motor to inform the behavior of  motor-cargo complexes. 
 % 
-Stochastic modeling has a fruitful history in generating insight into the mechanisms of cellular transport \cite{Bressloff2013}. In previous modeling studies on multiple motors, the details of underlying kinetics of individual motors and how the cargo load is shared between them have often been overlooked \cite{Miles2018a,McKinley2012,Ohashi2019}. In this work, we propose a computational approach to study a group of molecular motors which takes into account microscopic details of individual motors. We treat loading forces shared between motors by making them dependent on motors' relative positions. We focus on kinesin since its molecular mechanisms are better understood than dynein, allowing us to incorporate existing kinetic models into the framework we will present. By formulating semi-Markov process and invoking a functional CLT, asymptotic quantities for the position of the motor-cargo complex can be easily calculated by a few computationally-modest matrix operations. 
+Stochastic modeling has a fruitful history in generating insight into the mechanisms of cellular transport \cite{Bressloff2013}. In previous modeling studies on multiple motors, the details of underlying kinetics of individual motors and how the cargo load is shared between them have often been overlooked \cite{Miles2018a,McKinley2012,Ohashi2019}. In this work, we propose a computational approach to study a group of molecular motors which takes into account microscopic details of individual motors. We assume that loading forces shared between motors are dependent on their relative positions. We focus on kinesin since its molecular mechanisms are better understood than dynein, allowing us to incorporate existing kinetic models into the framework we will present. By formulating the problem as a semi-Markov process and invoking a functional CLT, asymptotic quantities for the position of the motor-cargo complex can be easily calculated by a few computationally-modest matrix operations. 
 
 The paper is outlined as follows. We first describe the semi-Markov approach in general.  Then, we show how this framework can be applied to motor-cargo complexes. Taking advantage of its computational efficiency, we then conduct a study of the system with a wide range of parameter choices. 
 
 \section{Semi-Markov Framework for Molecular Motor Models}
 
-In this section, we review a previously established framework for molecular motor models that summarizes each kinetic cycle as a time and a displacement \cite{Hughes2011,Hughes2012}, and then use a central limit theorem (CLT) to establish asymptotic quantities for position typically measured in experiments.  The goal of this paper is to generalize these technique to motor-cargo complexes.
+In this section, we review a previously established framework for molecular motor models that summarizes each kinetic cycle by the time it takes and the resulting displacement \cite{Hughes2011,Hughes2012}, and then use a central limit theorem (CLT) to establish asymptotic quantities for quantities typically measured in experiments.  The goal of this paper is to generalize this technique to motor-cargo complexes.
 
-In order to proceed, we will need to define a cycle somewhat abstractly and then fill in details with specific examples.  The central limit theorem for the position process involve sums of both the change in position of the motor-cargo complex during the $i$th cycle, which we will denote $Z_i$, as well as the time of the $i$th cycle, which we will denote $\tau_i$.  We will also need to carry some auxiliary information from one cycle to the next which we denote with $S_i$; one important aspect of the methods presented here is that $S_i$ will form a Markov chain irrespective of $Z_i$ and $\tau_i$.
+ We will define a cycle somewhat abstractly and then fill in details with specific examples.  The CLT for the position process involves sums of both the change in position of the motor-cargo complex during the $i$th cycle, which we will denote $Z_i$, as well as the time of the $i$th cycle, which we will denote $\tau_i$.  We will also need to carry some auxiliary information from one cycle to the next which is denoted by $S_i$; one important aspect of the methods presented here is that $S_i$ will form a Markov chain irrespective of $Z_i$ and $\tau_i$.
 
 The Markov chain $\{S_{i}\}_{i\in\mathbb{N}}$ where $S_{i}$
-represents the relative position and certain form of the kinetic state of each motor (together called the ``group state'' henceforth)  at ``time'' $i$. Note the how exactly the kinetic states are represented by $S_{i}$ should be decided carefully case by case as we will illustrate later by examples.   We
+represents the relative position and certain form of the kinetic state of each motor (together called the ``group state'' henceforth)  at ``time'' $i$. Note that how exactly the kinetic states are represented by $S_{i}$ should be decided carefully case by case as we will illustrate later by examples.   We
 adopt an underlying kinetic model for each motor which governs how
 the motor transitions through biochemical states. Note that every time
-a motor changes its kinetic state, the relative position only changes if this transition results in a physical step. \emph{JF: I don't think we want to set it up so that S is always the combined chemical state and relative position.  A better description is the chemical state and relative position of the system WHEN a physical transition occurs.Right? Or at least we say--that in each example we will make as the definition of a cycle either a chemical transition or a physical transition. LH: I have rewritten it. Let me if it is clear now} Let $\tau_{i}$ be the time for the transition of $S_{i-1}\to S_{i}$ to happen and $Z_{i}$ be the change in the group position defined as the arithmetic average of positions of all motors resulting
-from this transition (Figure \ref{fig:diagram}). If we assume the transition from $S_{i}\to S_{i+1}$ follows every change in the group state due to a transition in the underlying kinetic states of individual motors, then $\tau_{i}$ is an exponential random variable. In general, neither the state space of $\{S_{i}\}$ needs to be the set of all possible group states nor does the transition of $S_{i}\to S_{i+1}$ to exactly follow every change in the group state due to the individual motors' kinetic transitions. \emph{JF: this previous sentence contrdicts the first sentence of the paragraph.} Being aware of this sometimes would help simplify calculation as we will see later. 
+a motor changes its kinetic state, the relative position only changes if this transition results in a physical step. \emph{JF: I don't think we want to set it up so that S is always the combined chemical state and relative position.  A better description is the chemical state and relative position of the system WHEN a physical transition occurs.Right? Or at least we say--that in each example we will make as the definition of a cycle either a chemical transition or a physical transition. LH: I have rewritten it. Let me know if it is clear now} Let $\tau_{i}$ be the time for the transition of $S_{i-1}\to S_{i}$ to happen and $Z_{i}$ be the change in the group position defined as the arithmetic average of positions of all motors resulting
+from this transition (Figure \ref{fig:diagram}). If we assume the transition from $S_{i}\to S_{i+1}$ follows every change in the group state due to a transition in the underlying kinetic states of individual motors, then $\tau_{i}$ is an exponential random variable. In general, neither the state space of $\{S_{i}\}$ needs to be the set of all possible group states nor does the transition of $S_{i}\to S_{i+1}$ to exactly follow every change in the group state due to the individual motors' kinetic transitions. \emph{JF: this previous sentence contrdicts the first sentence of the paragraph. LH: here I commented about the state space $\{S_{i}\}$. The first sentence is just about $S_i$ }. Being aware of this sometimes would help simplify calculation as we will see later. 
 
 \begin{figure}
 \centerline{\includegraphics[scale=1]{diagram.pdf}}
@@ -57,7 +57,7 @@ from this transition (Figure \ref{fig:diagram}). If we assume the transition fro
 
 Let $X(t)$ be the position of the motor-cargo complex at time $t$. Using the variables defined above, we can write $X(t)=\sum_{i=1}^{N(t)}Z_{i}$ where $N(t)=\inf\{n\in\mathbb{N}:\sum_{i=1}^{n}\tau_{i}\ge t\}$. Two quantities commonly observed in experiments and studied theoretically
 are asymptotic speed and diffusivity, i.e., $V=\lim_{t\to\infty}\frac{E[X(t)]}{t}$
-and $D=\lim_{t\to\infty}\frac{\text{Var}[X(t)]}{2t}$. Since many experimental observations of motors occur at significantly long time and distance in contrast to microscopic motor dynamics, from a CLT (central limit theory) point of view, the position process will appear essentially like a Brownian motion. To make it precise, we want to cast a multi-motor model into a framework of semi-Markov processes so that these two asymptotic quantities of interests can be easily calculated from a functional CLT. Towards this goal, we consider
+and $D=\lim_{t\to\infty}\frac{\text{Var}[X(t)]}{2t}$. Since many experimental observations of motors occur at significantly long time and distance in contrast to microscopic motor dynamics, from a CLT point of view, the position process will appear essentially like a Brownian motion. To make it precise, we want to place a multi-motor model into a framework of semi-Markov processes so that these two asymptotic quantities of interests can be easily calculated from a functional CLT. Towards this goal, we consider
 the discrete-time Markov chain 
 \[
 \begin{pmatrix}Z_{i}\\
@@ -107,7 +107,7 @@ the loading force $F$ by force balance
 F=\sum_{j=1}^{m}k_{j}x_{j},
 \]
 where $x_{i}$ are the displacements of the spring connecting to the
-i-th motor ($x_{i}>0$ for displacements in the hindering direction
+i-th motor ($x_{i}>0$ for displacements in the hindering(?) direction
 and $x_{i}<0$ vice versa). Hence the loading force felt by the i-th
 motor is $k_{i}x_{i}.$ In this modeling framework, the state $S_{i}$
 consisting of 
@@ -117,7 +117,7 @@ though some slack regime possibly exists, where the displacement between the mot
 \item their kinetic states (including detachment as a state). 
 \end{itemize}
 Moreover, in the kinetic model we wish to adopt, at least one of the
-transitions is force-dependent and its rate is thus affected by which motors are coupled to that motor. In the following, we present details on how to apply this approach through some examples. 
+transitions is force-dependent and its rate is thus affected by which motors are coupled to that motor(?). In the following, we present details on how to apply this approach through some examples. 
 
 \subsubsection{A Standard 3-state Motor Model}
 
@@ -167,9 +167,9 @@ is 0 if $S_{i-1} \to S_{i}$ does not involve any motor stepping  and $1/m$ other
 \subsubsection{A More Complex Model with Quasi-stationary Approximation}
 
 One drawback of the previous set-up is that the number of states
-grows factorially (exponentially) with number of motors. In experimental studies such as the DNA origami experiments described in the introduction,
+grows more than exponentially (factorially?) with number of motors. In experimental studies such as the DNA origami experiments described in the introduction,
 only a few motors are involved. So it is less a concern when modeling
-those situations. Moreover we can make a quasi-stationary approximation
+those situations. Moreover, we can make a quasi-stationary approximation
 to further mitigate the issue. In this case, consider a 4-state kinetic
 cycle (e.g. the one in \cite{Hughes2011}) 
 \[
@@ -180,8 +180,8 @@ cycle (e.g. the one in \cite{Hughes2011})
 \end{array}
 \]
 where $E$ is detached state. In this case, completing a clockwise
-cycle means a forward step and vice versa for backward stepping. Although
-the end (or start) of a cycle can be arbitrary appointed, we have
+cycle means a forward step and vice versa for backward stepping. Although there is flexibility in terms of how
+the end (or start) of a cycle can be defined, we have
 to be careful in order to use a quasi-stationary approximation. To
 make a quasi-stationary argument, we need to identify the rate limiting
 transition in the cycle. Say transitions $A\rightleftharpoons F$
@@ -217,8 +217,8 @@ the semi-Markov approach.
 
 \subsection{Standard 3-state Model}
 
-For this model, we consider a 2-motor system for simplicity. We adapt
-biological relevant parameters found in literature shown in table\ref{tab:parameters}.
+We consider a 2-motor system for simplicity. We adopt
+biological relevant parameters found in the literature shown in Table \ref{tab:parameters}.
 In Figure \ref{fig:FV 1-2-motor}, the single-motor kinetic model gives
 a force-velocity curve of a typical sigmoid shape. It can be seen
 that the motor is insensitive to small hindering (positive) force
@@ -231,7 +231,7 @@ under assisting or small hindering force, which agrees with previous
 studies \cite{McKinley2012}. This indicates that two motors tend to
 interfere with each other. This is expected considering the characteristics
 of the single-motor force-velocity relation, i.e., the leading motor
-would be slowed down by the drag caused by the lagging motor while
+would be slowed down by the drag caused by the trailing motor while
 the trailing motor would not speed up because of the assistance from
 the leading motor. However, when the 2-motor system is under heavy
 load, they tend to share the load and can go faster than 1-motor system.
@@ -248,94 +248,6 @@ It is likely due to the fact that 2-motor system tend to have more
 frequent detachment under large force. Since detachment plays an important
 role, we consider the model with detachment henceforth. \fi
 
-The second moment is less often studied in experimental studies, because it is expensive to replicate the same experiment many times and is often conflated with experimental error. In Figure \ref{fig:M2},
-we show an example in which difference in second moment of the single
-motor behavior can give arise salient differences in the first moment
-of the group behavior. Since the kinetic model is simple, we can come up with two parameter sets that have same first moment (force-velocity curve) of 1-motor system. The parameter values are summarized in Table \ref{tab:parameters} under the name "generic kinesin".  As we can see for 2-motor system, the first parameter set($k_{ab}=500$) differs from 
-the second parameter set ($k_{ab}=5000$) when the loading force is assisting or small. 
-In general, we see that the loading force decreases diffusivity and
-that the diffusivities of 1-motor and 2-motor systems tend to converge
-at large loading force. It should also be noted that force-velocity
-curve alone is not sufficient to idnefity all parameters of such a
-simple kinetic model. To avoid unidentifiability, care should be given
-in parameter fitting and model formulation. 
-
-Next, we conduct sensitivity analysis for compensation force. We focus
-on reattachment rate since its information is scarce in literature.
-We hope our theoretical study will stimulate experimental studies
-on this front. We also want to find out effects of asymmetry in detachment
-in response to the assisting and hindering force on compensation.
-We suspect that favorable detachment under assisting load can result
-in increase in velocity. As in Figure \ref{fig:fcomp surf}, our results
-show that asymmetry in detachment rate plays only a marginal role while $k_{det}$ shifts the surface in a larger range. It should
-be noted that detachment only happens at state A in our model. Thus
-the $k_{det}$ in our model is a different rate from most reported
-detachment rates which are first order averages. 
-
-Moreover, our framework easily generates stationary distribution of
-motor configurations (proportion of time the system stays in each
-configuration). In Figure \ref{fig:stationary-distribution}, we see
-that the distribution is symmetric and centered at zero when two motors
-are identical. The symmetry is not a surprise since two motors are
-identical. Furthermore, We test the case of a group of two motors
-of different types by selecting two parameter sets representing kinesin1
-and kinesin2. We find that the distribution skewed to the left indicating
-that kinesin1 tends to be ahead of kinesin2. In both cases, variance
-of the stationary distribution decreases with loading force. 
-
-By adding zero-attached-motor state as a absorbing state, we can calculate
-the expected run length. In Figure \ref{fig:force-run-length},
-we notice the force-run length curves are not symmetric, which is
-likely due to asymmetric force-velocity response to assisting/hindering
-force. However, run length decreases faster with assisting force. It
-is possibly due to the large variance of distribution of configuration
-under assisting force, i.e., the motor explore the configurations
-space more extensive increasing the exposure to more vulnerable situations
-that leads to detachment. In general, we observe that run length is
-very sensitive to change in $k_{det}$. 
-
-
-\begin{figure}
-\centerline{\includegraphics[scale=0.5]{figures/abc/1-2-w-wo-detach/FV-kab500}}
-\caption{\label{fig:FV 1-2-motor}force-velocity curves of a single motor, 2-motor complex with and without detachment (deprecated? )}
-\end{figure}
-
-\begin{figure}
-\includegraphics[width=.5\textwidth]{figures/abc/500vs5000newest/force-vel}
-\includegraphics[width=.5\textwidth]{figures/abc/500vs5000newest/force-dif}
-\centerline{\includegraphics[width=.5\textwidth]{figures/abc/500vs5000newest/force-coefvar}}
-\caption{\label{fig:M2}force-velocity, force-diffusivity and force-coefficient
-of variation curves of single motor and 2-motor complex in two parameter
-sets. Note that second moment of the single motor has effects on the
-first moment of 2-motor complex.}
-
-\end{figure}
-\begin{figure}
-\noindent
-\includegraphics[width=.5\textwidth]{figures/abc/fcomp-katt-delta/delta-5}
-\includegraphics[width=.5\textwidth]{figures/abc/fcomp-katt-delta/delta-20} 
-\caption{\label{fig:fcomp surf} surface plot of compensation force vs $k_{att}$ and $\delta_{4}$. Left: $k_{det}=5$. Right: $k_{det}=20$}
-\end{figure}
-
-\begin{figure}
-\includegraphics[width=.5\textwidth]{figures/abc/twokins/kin1-kin1/kin1-kin1-barplot}
-\includegraphics[width=.5\textwidth]{figures/abc/twokins/kin1-kin2/kin1-kin2-barplot}
-
-\includegraphics[width=.5\textwidth]{figures/abc/twokins/kin1-kin2/kin1-kin2-force-vel}
-\includegraphics[width=.5\textwidth]{figures/abc/twokins/kin1-kin2/kin1-kin2-force-dif}
-
-\caption{\label{fig:stationary-distribution}Top: stationary distribution of
-relative configurations of a kin1-kin1 (left) and kin1-kin2 (right)
-group. Bottom: corresponding force-velocity and force-diffusivity
-curves }
-
-\end{figure}
-\begin{figure}
-\centering
-\includegraphics[scale=0.5]{figures/abc/ER/ER}
-\caption{\label{fig:force-run-length}force-run length curves at $d_{det}=30,50,70$}
-
-\end{figure}
 \begin{table}
 \begin{tabularx}{\textwidth}{|X|p{.3\textwidth}|X|X|X|}
 \hline 
@@ -362,11 +274,100 @@ $\delta_{3},\delta_{4}$ & characteristic distance for detachment under hindering
 \caption{\label{tab:parameters}parameters values. }
 \end{table}
 
+\begin{figure}
+\centerline{\includegraphics[scale=0.5]{figures/abc/1-2-w-wo-detach/FV-kab500}}
+\caption{\label{fig:FV 1-2-motor}force-velocity curves of single-motor and 2-motor complexes with and without detachment (deprecated? )}
+\end{figure}
+
+The second moment is less often studied in experimental studies, because it is expensive to replicate the same experiment many times and is often conflated with experimental error. In Figure \ref{fig:M2},
+we show an example in which difference in second moment of the single
+motor behavior can give arise salient differences in the first moment
+of the group behavior. Since the kinetic model is simple, we can come up with two parameter sets that have same first moment (force-velocity curve) of 1-motor system. The parameter values are summarized in Table \ref{tab:parameters} under the name ``generic kinesin''.  As we can see for a 2-motor system, the force-velocity curve generated by the first parameter set($k_{ab}=500$) differs that by 
+the second parameter set ($k_{ab}=5000$) when the loading force is assisting or small. 
+In general, we see that the loading force decreases diffusivity and
+that the diffusivities of 1-motor and 2-motor systems tend to converge
+at large loading force. It should also be noted that force-velocity
+curve alone is not sufficient to identify all parameters of such a
+simple kinetic model. To avoid unidentifiability, care should be given
+in parameter fitting and model formulation. 
+
+\begin{figure}
+\includegraphics[width=.5\textwidth]{figures/abc/500vs5000newest/force-vel}
+\includegraphics[width=.5\textwidth]{figures/abc/500vs5000newest/force-dif}
+\centerline{\includegraphics[width=.5\textwidth]{figures/abc/500vs5000newest/force-coefvar}}
+\caption{\label{fig:M2}force-velocity, force-diffusivity and force-coefficient
+of variation curves of single motor and 2-motor complex in two parameter
+sets. Note that second moment of the single motor has effects on the
+first moment of 2-motor complex.}
+\end{figure}
+
+Next, we conduct sensitivity analysis for compensation force. We focus
+on reattachment rate since its information is scarce in literature.
+We hope our theoretical study will stimulate experimental studies
+on this front. We also want to find out effects of asymmetry in detachment
+in response to the assisting and hindering force on compensation.
+We suspect that favorable detachment under assisting load can result
+in increase in velocity. As in Figure \ref{fig:fcomp surf}, our results
+show that asymmetry in detachment rate plays only a marginal role while $k_{det}$ shifts the surface in a larger range. It should
+be noted that detachment only happens at state A in our model. Thus
+the $k_{det}$ in our model is a different rate from most reported
+detachment rates which are first order averages. 
+
+\begin{figure}
+\noindent
+\includegraphics[width=.5\textwidth]{figures/abc/fcomp-katt-delta/delta-5}
+\includegraphics[width=.5\textwidth]{figures/abc/fcomp-katt-delta/delta-20} 
+\caption{\label{fig:fcomp surf} surface plot of compensation force vs $k_{att}$ and $\delta_{4}$. Left: $k_{det}=5$. Right: $k_{det}=20$}
+\end{figure}
+
+Moreover, our framework made it simple to generates stationary distribution of
+motor configurations (proportion of time the system stays in each
+configuration). In Figure \ref{fig:stationary-distribution}, we see
+that the distribution is symmetric and centered at zero when two motors
+are identical. The symmetry is not a surprise since two motors are
+identical. Furthermore, We test the case of a group of two motors
+of different types by selecting two parameter sets representing kinesin1
+and kinesin2. We find that the distribution skewed to the left indicating
+that kinesin1 tends to be ahead of kinesin2. In both cases, variance
+of the stationary distribution decreases with loading force. 
+
+\begin{figure}
+\includegraphics[width=.5\textwidth]{figures/abc/twokins/kin1-kin1/kin1-kin1-barplot}
+\includegraphics[width=.5\textwidth]{figures/abc/twokins/kin1-kin2/kin1-kin2-barplot}
+
+\includegraphics[width=.5\textwidth]{figures/abc/twokins/kin1-kin2/kin1-kin2-force-vel}
+\includegraphics[width=.5\textwidth]{figures/abc/twokins/kin1-kin2/kin1-kin2-force-dif}
+
+\caption{\label{fig:stationary-distribution}Top: stationary distribution of
+relative configurations of a kin1-kin1 (left) and kin1-kin2 (right)
+group. Bottom: corresponding force-velocity and force-diffusivity
+curves }
+\end{figure}
+
+By adding zero-attached-motor state as a absorbing state, we can calculate
+the expected run length. In Figure \ref{fig:force-run-length},
+we notice the force-run length curves are not symmetric, which is
+likely due to asymmetric force-velocity response to assisting/hindering
+force. However, run length decreases faster with assisting force. It
+is possibly due to the large variance of distribution of configuration
+under assisting force, i.e., the motor explore the configurations
+space more extensive increasing the exposure to more vulnerable situations
+that leads to detachment. In general, we observe that run length is
+very sensitive to change in $k_{det}$. 
+
+\begin{figure}
+\centering
+\includegraphics[scale=0.5]{figures/abc/ER/ER}
+\caption{\label{fig:force-run-length}force-run length curves at $d_{det}=30,50,70$}
+\end{figure}
+
+
+
 
 
 \subsection{Cyclic 4-state Model}
 
-We use the quasi-stationary approximation in our semi-Markov approach
+We use an quasi-stationary approximation in our semi-Markov approach
 to study a group of 5 motors. Here what we did is a proof of concept
 since biological evidence that supports quasi-stationary requirements
 is yet to be identified. Nevertheless, transitions $A\to F$, $A\to E$,
@@ -387,7 +388,6 @@ qss2 achieves better approximation than qss1.
 
 \caption{\label{fig:qss-FVFD}semi-Markov with quasi-stationary approximation
 (qss) compared to Monte Carlo (MC) simulation.}
-
 \end{figure}
 
 \section{Conclusion}
@@ -397,8 +397,8 @@ transportation by a group of kinesin motors. Given a kinetic model
 of a single motor, we can formulate it as a semi-Markov process to
 study a group of motors. By applying a functional CLT, quantities
 of interests such as asymptotic velocity, diffusivity and mean run
-length of the motor group can be easily calculated with a few matrix
-operations. It renders much better computational efficiency than Monte
+length of the motor group can be simply calculated with a few matrix
+operations. It offers much better computational efficiency than Monte
 Carlo simulations without loss of underlying details of the kinetic
 model. It should be noted that second moment results are usually computational
 expensive using Monte Carlo simulations due to its slow convergence
