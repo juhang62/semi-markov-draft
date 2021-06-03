@@ -21,9 +21,7 @@
 \title{A Semi-Markov Approach to Study a Group of Kinesin Motors}
 \maketitle
 \begin{abstract}
-We propose a general mathematical and computational approach to study cellular transport driven by a group
-of kinesin motors. Our approach can integrate kinetic models of a
-single kinesin motor, including detachment and reattachment events, to study the group behaviors of several motors. By formulating the problem as a semi-Markov process and applying a central limit theorem, asymptotic velocity and diffusivity can be readily calculated, rendering considerable computational advantage over Monte Carlo simulations in tasks such as parameter sensitivity analysis and model selection. We demonstrate the method with some examples and illustrate the importance of capturing the intrinsic microscopic-level dynamics of individual motors and how changes at the microscopic level propagate to the motor-cargo complex at a mesoscopic level. 
+We propose a general mathematical and computational approach to study cellular transport driven by a group of kinesin motors. It is a framework of multi-scale modeling that integrates kinetic models of a single kinesin motor, including detachment and reattachment events, to study group behaviors of several motors. By formulating the problem as a semi-Markov process and applying a central limit theorem, asymptotic velocity and diffusivity can be readily calculated, which offers considerable computational advantage over Monte Carlo simulations in tasks such as parameter sensitivity analysis and model selection. We demonstrate the method with some examples and illustrate the importance of capturing the intrinsic microscopic-level dynamics of individual motors and how changes at the microscopic level propagate to the motor-cargo complex at a mesoscopic level. Particularly, we showcase an example in which difference in the second moment of single-motor characteristic gives arise to different first moment characteristics of the motor group.  
 \end{abstract}
 
 \section{Introduction}
@@ -51,7 +49,7 @@ from this transition (Figure \ref{fig:diagram}). If we assume the transition fro
 
 \begin{figure}
 \centerline{\includegraphics[scale=1]{diagram.pdf}}
-\caption{\label{fig:diagram}Transition graph}
+\caption{\label{fig:diagram}Transition graph where arrows indicate dependence. In our model, $S_i$ is the state of the motors in the group, $Z_i$ is the position of the motor group and $\tau_i$ is the time it takes for the transition from $S_{i-1}$ to $S_{i}$.}
 \end{figure}
 
 
@@ -271,7 +269,7 @@ $\delta_{1}$ & characteristic distance for $k_{bc}$ under hindering/assisting fo
 $\delta_{3},\delta_{4}$ & characteristic distance for detachment under hindering/assisting load & 0.3, 1.0 & 0.3, 1.0 & 0.3, 1.0\tabularnewline
 \hline 
 \end{tabularx}
-\caption{\label{tab:parameters}parameters values. }
+\caption{\label{tab:parameters}parameter values of the standard 3-state model. }
 \end{table}
 
 \begin{figure}
@@ -293,7 +291,7 @@ in parameter fitting and model formulation.
 
 \begin{figure}
 \includegraphics[width=.5\textwidth]{figures/abc/500vs5000newest/force-vel}
-\includegraphics[width=.5\textwidth]{figures/abc/500vs5000newest/force-dif-good}
+\includegraphics[width=.5\textwidth]{figures/abc/500vs5000newest/force-dif}
 \centerline{\includegraphics[width=.5\textwidth]{figures/abc/500vs5000newest/force-coefvar}}
 \caption{\label{fig:M2}force-velocity, force-diffusivity and force-coefficient
 of variation curves of single motor and 2-motor complex in two parameter
@@ -317,7 +315,7 @@ detachment rates which are first order averages.
 \noindent
 \includegraphics[width=.5\textwidth]{figures/abc/fcomp-katt-delta/delta-5}
 \includegraphics[width=.5\textwidth]{figures/abc/fcomp-katt-delta/delta-20} 
-\caption{\label{fig:fcomp surf} surface plot of compensation force vs $k_{att}$ and $\delta_{4}$. Left: $k_{det}=5$. Right: $k_{det}=20$}
+\caption{\label{fig:fcomp surf} surface plot of compensation force vs $k_{att}$ and $\delta_{4}$. Left: plot generated with setting $k_{det}=5$. Right: plot generated with setting $k_{det}=20$}
 \end{figure}
 
 Moreover, our framework made it simple to generates stationary distribution of
