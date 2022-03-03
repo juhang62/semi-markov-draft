@@ -34,7 +34,7 @@ Stochastic modeling has a fruitful history in generating insight into the mechan
 
 The paper is outlined as follows. We first describe the semi-Markov approach in general.  Then, we show how this framework can be applied to motor-cargo complexes. Taking advantage of its computational efficiency, we then conduct a study of the system with a wide range of parameter choices. 
 
-\section{Semi-Markov Framework for Molecular Motor Models}
+\section{Semi-Markov Framework for Molecular Motor Models} \label{sec:framework}
 
 In this section, we review a previously established framework for molecular motor models that summarizes each kinetic cycle by the time it takes and the resulting displacement \cite{Hughes2011,Hughes2012}, and then use a central limit theorem (CLT) to establish asymptotic quantities for quantities typically measured in experiments.  The goal of this paper is to generalize this technique to motor-cargo complexes.
 
@@ -112,7 +112,7 @@ though some slack regime possibly exists, where the displacement between the mot
 \item their kinetic states (including detachment as a state). 
 \end{itemize}
 Moreover, in the kinetic model we wish to adopt, at least one of the
-transitions is force-dependent and its rate is thus affected by which motors are coupled to that motor(?). In the following, we present details on how to apply this approach through some examples. 
+transitions is force-dependent and its rate is thus affected by other motors to which it is coupled. In the following, we present details on how to apply this approach through some examples. 
 
 \subsubsection{A Standard 3-state Motor Model}
 
@@ -154,8 +154,7 @@ its transition matrix can be formed. Moreover it is irreducible and
 hence it has a unique stationary distribution. Aperiodicity is easily
 seen by tracking the number steps back to certain state. For example, looking at state A, it can take a 2-step loop (A to B back to A) or a 3-step loop (A to B to E to A). The greatest common divisor of 2 and 3 is 1 and hence by definition the chain is aperiodic. 
 
-Assumption 2 is from our modeling setup and readily verified. First we note that $\tau_{i}\vert S_{i-1},S_{i}=\tau_{i}\vert S_{i-1}\sim Exp(\text{\ensuremath{\lambda}})$
-where rate $\lambda$ is the sum of rates of all transitions out of
+Assumption 2 is from our modeling setup and readily verified. First we note that $\tau_{i}\vert S_{i-1},S_{i}=\tau_{i}\vert S_{i-1}\sim Exp(\text{\ensuremath{\lambda}})$ is exponentially distributed for which rate $\lambda$ is the sum of rates of all transitions out of
 $S_{i}$. Also, $Z_{i}\vert {S_{i-1},S_{i}}$
 is 0 if $S_{i-1} \to S_{i}$ does not involve any motor stepping  and $1/m$ otherwise, where $m$ is the number of motors in the group. 
 
@@ -213,8 +212,7 @@ the semi-Markov approach. While Gillespie method simulations could also be carri
 \subsection{Standard 3-state Model}
 
 We consider a 2-motor system for simplicity. We adopt
-biological relevant parameters found in the literature shown in Table \ref{tab:parameters}. \emph{JF: Where do these come from--my guess is that these are from the traffic paper from will?}
-In Figure \ref{fig:FV 1-2-motor}, the single-motor kinetic model gives
+biological relevant parameters found in the literature \cite{Andreasson2015} shown in Table \ref{tab:parameters}. In Figure \ref{fig:FV 1-2-motor}, the single-motor kinetic model gives
 a force-velocity curve of a typical sigmoid shape. It can be seen
 that the motor is insensitive to small hindering (positive) force
 and that the assisting (negative) force only speeds up the motor slightly.
@@ -224,7 +222,7 @@ transitions. The diffusivity curve has a similar shape. We found that
 a 2-motor system is in general slower than 1-motor system when operated
 under assisting or small hindering force, which agrees with previous
 studies \cite{McKinley2012}. This indicates that two motors tend to
-interfere with each other. \emph{I wonder if interfere is the right word--this sound like they are bumping into each other or something like that.} This is expected considering the characteristics
+impede each other. \emph{I wonder if interfere is the right word--this sound like they are bumping into each other or something like that. LF: changed to impede} This is expected considering the characteristics
 of the single-motor force-velocity relation, i.e., the leading motor
 would be slowed down by the forces caused by the trailing motor while
 the trailing motor would not speed up because of the assistance from
@@ -242,7 +240,7 @@ the force-velocity is lost: it dips down at high assisting force.
 It is likely due to the fact that 2-motor system tend to have more
 frequent detachment under large force. Since detachment plays an important
 role, we consider the model with detachment henceforth.  \fi
-\emph{JF: note that you may want to emphasize more the interesting diffusion curve--namely the massive difference in diffusivity at low forces for the one motor--and the fact that is strongly damped out for the two motors--the two motors stabilize diffusion at low force--while having a minimal effect on velocity--seems relevant}
+\emph{JF: note that you may want to emphasize more the interesting diffusion curve--namely the massive difference in diffusivity at low forces for the one motor--and the fact that is strongly damped out for the two motors--the two motors stabilize diffusion at low force--while having a minimal effect on velocity--seems relevant. LH: added a paragraph which naturally leads to discussion of second moment}. 
 
 \begin{table}
 \begin{tabularx}{\textwidth}{|X|p{.3\textwidth}|X|X|X|}
@@ -270,11 +268,25 @@ $\delta_{3},\delta_{4}$ & characteristic distance for detachment under hindering
 \caption{\label{tab:parameters}parameter values of the standard 3-state model. }
 \end{table}
 
+
+Next, we conduct sensitivity analysis for compensation force. We focus
+on reattachment rate since information about it is scarce in the literature. \emph{JF: do you have any citations to confirm this? LH: no, I just did not recall reading about any studies on reattachment..}
+We hope our theoretical study will stimulate experimental studies
+on this front. \emph{JF: One problem is that this is not an easy thing to study--what kind of study could give us such information.} We also want to find out effects of asymmetry in detachment
+in response to the assisting and hindering force on compensation.
+We suspect that favorable detachment under assisting load can result
+in increase in velocity. As in Figure \ref{fig:fcomp surf}, our results show that asymmetry in detachment rate plays only a marginal role while $k_{det}$ shifts the surface in a larger range. It should
+be noted that detachment only happens at state A in our model. Thus
+the $k_{det}$ in our model is a different rate from most reported
+detachment rates which are first order averages. 
+
+
 \begin{figure}
 \centerline{\includegraphics[scale=0.5]{figures/abc/1-2-w-wo-detach/FV-kab500}}
-\caption{\label{fig:FV 1-2-motor}force-velocity curves of single-motor and 2-motor complexes with and without detachment (deprecated? )}
+\caption{\label{fig:FV 1-2-motor}force-velocity curves of single-motor and 2-motor complexes with and without detachment (deprecated? add diffusivity? )}
 \end{figure}
 
+We also observe that 2-motor system in general have reduced diffusivity comparing to 1-motor system, especially at assisting or low hindering force regime. It may indicate that multiple motor systems have advantage in dilivering cargo more precisely.  
 
 The second moment is less often studied in experimental studies, because it is expensive to replicate the same experiment many times and is often conflated with experimental error. In Figure \ref{fig:M2},
 we show an example in which difference in second moment of the single
@@ -298,16 +310,7 @@ sets. Note that second moment of the single motor effects the
 first moment of 2-motor complex.}
 \end{figure}
 
-Next, we conduct sensitivity analysis for compensation force. We focus
-on reattachment rate since information about it is scarce in the literature. \emph{JF: do you have any citations to confirm this?}
-We hope our theoretical study will stimulate experimental studies
-on this front. \emph{JF: One problem is that this is not an easy thing to study--what kind of study could give us such information.} We also want to find out effects of asymmetry in detachment
-in response to the assisting and hindering force on compensation.
-We suspect that favorable detachment under assisting load can result
-in increase in velocity. As in Figure \ref{fig:fcomp surf}, our results show that asymmetry in detachment rate plays only a marginal role while $k_{det}$ shifts the surface in a larger range. It should
-be noted that detachment only happens at state A in our model. Thus
-the $k_{det}$ in our model is a different rate from most reported
-detachment rates which are first order averages. 
+
 
 \begin{figure}
 \noindent
@@ -322,9 +325,9 @@ configuration). In Figure \ref{fig:stationary-distribution}, we see
 that the distribution is symmetric and centered at zero when two motors
 are identical. The symmetry is not a surprise since two motors are
 identical. Furthermore, We test the case of a group of two motors
-of different types by selecting two parameter sets representing kinesin1
-and kinesin2. We find that the distribution skewed to the left indicating
-that kinesin1 tends to be ahead of kinesin2. In both cases, variance
+of different types by selecting two parameter sets representing kinesin-1
+and kinesin-2. We find that the distribution skewed to the left indicating
+that kinesin-1 tends to be ahead of kinesin-2. In both cases, variance
 of the stationary distribution decreases with loading force. 
 
 \begin{figure}
@@ -391,10 +394,10 @@ qss2 achieves better approximation than qss1.
 In this work, we have presented a semi-Markov approach to study cellular
 transportation by a group of kinesin motors. Given a kinetic model
 of a single motor, we can formulate it as a semi-Markov process to
-study a group of motors. By applying a functional CLT, quantities
+study a group of motors. In this semi-Markov framework, quantities
 of interests such as asymptotic velocity, diffusivity and mean run
 length of the motor group can be simply calculated with a few matrix
-operations. \emph{JF: Did the functional CLT aid in the calculation of the mean run length?  I think the fclt doesn't apply when there is detachment.} It offers much better computational efficiency than Monte
+operations. It offers much better computational efficiency than Monte
 Carlo simulations without loss of underlying details of the kinetic
 model. It should be noted that second moment results are usually computational
 expensive using Monte Carlo simulations due to its slow convergence
@@ -441,8 +444,8 @@ matrix
 \sigma_{Z\tau} & \sigma_{\tau}^{2}
 \end{pmatrix}.
 \]
-Based on assumption1, $S_{i}$ has a unique stationary distribution
-$\boldsymbol{\pi}_{S}$. Based on assumption2, we know the first two
+Based on Assumption 1 stated in Section \ref{sec:framework}, $S_{i}$ has a unique stationary distribution
+$\boldsymbol{\pi}_{S}$. Based on Assumption 2, we know the first two
 moments of $(Z_{i},\tau_{i})$ conditioned on $S_{i-1}$,  denoted as
 as $\boldsymbol{\mu}_{Z\vert S},\boldsymbol{\mu}_{\tau\vert S},\boldsymbol{\eta}_{ZZ\vert S},\boldsymbol{\eta}_{\tau\tau\vert S},\boldsymbol{\eta}_{Z\tau\vert S}$, and their first moment conditioned on $S_{i-1},S_{i}$, denoted as $\Xi_Z$ and $\Xi_{\tau}$, which are matrices with components  
 $$(\Xi_Z)_{\alpha,\beta}=E[Z_i \vert S_{i-1}=\alpha,S_{i}=\beta].$$
@@ -467,19 +470,19 @@ cov(Z_{i},Z_{i+k}) & = & E[cov(Z_{i},Z_{i+k}\vert S_{i-1},S_{i})]+cov(E[Z_{i}\ve
 where the first term is zero because of conditional independence  and the second
 term is as follows
 \begin{eqnarray*}
-cov(E[Z_{i}\vert S_{i-1},S_{i}],E[Z_{i+k}\vert S_{i-1},S_{i}]) & = & \boldsymbol{1}'  \Pi (R_Z \circ P) P^{k-1} (R_Z \circ P) \boldsymbol{1},
+cov(E[Z_{i}\vert S_{i-1},S_{i}],E[Z_{i+k}\vert S_{i-1},S_{i}]) & = & \boldsymbol{\pi}'  (R_Z \circ P) P^{k-1} (R_Z \circ P) \boldsymbol{1},
 \end{eqnarray*}
-where $\boldsymbol{1}$ is a vector of all one's, $\Pi=\text{diag}(\boldsymbol{\pi}_S)$ is a diagonal matrix with diagonal $\boldsymbol{\pi}_S$, $P$ is the transition matrix of the chain $\{S_{i}\}$, $\circ$ denotes Hadamard product, and $R_Z$ is a matrix with its component as 
+where $P$ is the transition matrix of the chain $\{S_{i}\}$, $\circ$ denotes Hadamard product, and $R_Z$ is a matrix with its component as 
 \begin{eqnarray*}
-(R_Z)_{\alpha \beta} & = & (\Xi_Z)_{\alpha \beta} - \sum_{\alpha.\beta} (\Xi_Z)_{\alpha \beta} p(S_i=\beta \vert S_{i-1}=\alpha) p(S_{i-1}=\alpha),
+(R_Z)_{\alpha \beta} & = & (\Xi_Z)_{\alpha \beta} - \sum_{p,q} (\Xi_Z)_{p q} p(S_i=q \vert S_{i-1}=p) p(S_{i-1}=p),
 \end{eqnarray*}
 
 Let $M$ is a $m\times m$ matrix with all entries being $1/m$. We note that
 \begin{equation}
-\boldsymbol{1}'  \Pi (R_Z \circ P) P^{k-1} (R_Z \circ P) \boldsymbol{1} = \boldsymbol{1}'  \Pi (R_Z \circ P) (P-M)^{k-1} (R_Z \circ P) \boldsymbol{1},
+\boldsymbol{\pi}' (R_Z \circ P) P^{k-1} (R_Z \circ P) \boldsymbol{1} = \boldsymbol{\pi}'  (R_Z \circ P) (P-M)^{k-1} (R_Z \circ P) \boldsymbol{1},
 \label{eq:(P-M)^k}
 \end{equation}
-which is deduced from the fact that $PM=M$ and $\boldsymbol{1}'\Pi (R_Z \circ P) \boldsymbol{1}=0$. We further note that the
+which is deduced from the fact that $PM=M$ and $\boldsymbol{\pi}' (R_Z \circ P) \boldsymbol{1}=0$. We further note that the
 spectral radius $\rho(P-M)<1$ (aperiodicity) so that $\sum_{k=0}^{\infty}(P-M)^{k}=(I-P+M)^{-1}$.
 Hence 
 \begin{eqnarray*}
